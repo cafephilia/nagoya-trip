@@ -29,10 +29,17 @@ function initialTab(): string {
 const active = ref(initialTab())
 const activeDay = computed(() => DAYS.find(d => d.id === active.value))
 
+// 탭을 누르면 주소의 해시도 맞춰 둔다. replaceState는 hashchange를 일으키지 않고 방문 기록도 쌓지 않는다
 watch(active, id => {
   store.set(TAB_KEY, id)
+  if (location.hash.slice(1) !== id) history.replaceState(null, '', '#' + id)
   window.scrollTo({ top: 0 })
 })
+
+const onHashChange = () => {
+  const hash = location.hash.slice(1)
+  if (isTab(hash)) active.value = hash
+}
 
 const taxi = ref<Place | null>(null)
 provide(openTaxiKey, place => {
@@ -42,8 +49,14 @@ provide(openTaxiKey, place => {
 const onKey = (e: KeyboardEvent) => {
   if (e.key === 'Escape') taxi.value = null
 }
-onMounted(() => document.addEventListener('keydown', onKey))
-onBeforeUnmount(() => document.removeEventListener('keydown', onKey))
+onMounted(() => {
+  document.addEventListener('keydown', onKey)
+  window.addEventListener('hashchange', onHashChange)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', onKey)
+  window.removeEventListener('hashchange', onHashChange)
+})
 </script>
 
 <template>
