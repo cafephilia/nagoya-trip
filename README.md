@@ -6,10 +6,25 @@
 - 오는 편: Peach MM767 나고야(주부) 15:00 → 김포 17:00
 - 숙소: 호텔 마이스테이즈 나고야 니시키
 
-`index.html` 하나로 동작하는 모바일용 페이지입니다. 브라우저로 바로 열면 됩니다.
+사이트: https://cafephilia.github.io/nagoya-trip/
+
+Vue 3 + TypeScript + Vite로 만든 모바일용 페이지입니다.
 
 - 날짜별 일정, 식당·관광지 상세(영업시간, 휴무, 메뉴, 가격)와 구글 지도 링크
 - 택시 기사에게 보여줄 일본어 주소 카드
 - 항공권, 수하물, 교통 요금, 긴급 연락처, 출발 전 체크리스트
+
+## 개발
+
+Node 20.19 이상이 필요합니다.
+
+```bash
+npm install
+npm run dev     # 로컬 개발 서버
+npm run build   # 타입 검사 + dist 빌드
+```
+
+- 일정 데이터는 `src/data/trip.ts` 한 곳에 있습니다.
+- `main`에 push하면 GitHub Actions가 빌드해서 GitHub Pages에 배포합니다.
 
 정보 확인일은 2026-10-06입니다. 영업시간과 가격은 바뀔 수 있습니다.
