@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
-import { DAYS } from './data/trip'
+import { DAYS, FLIGHTS } from './data/trip'
 import type { Place } from './types'
 import { localDate, openTaxiKey, store } from './utils'
 import DayView from './components/DayView.vue'
@@ -28,6 +28,17 @@ function initialTab(): string {
 
 const active = ref(initialTab())
 const activeDay = computed(() => DAYS.find(d => d.id === active.value))
+
+/** 출발 전에는 D-day, 여행 중에는 몇 일차인지, 다녀온 뒤에는 완료 표시 */
+const tripStatus = (() => {
+  const DAY_MS = 86_400_000
+  const t = Date.parse(today)
+  const start = Date.parse(DAYS[0].date)
+  const end = Date.parse(DAYS[DAYS.length - 1].date)
+  if (t < start) return `D-${Math.round((start - t) / DAY_MS)}`
+  if (t <= end) return `여행 ${Math.round((t - start) / DAY_MS) + 1}일차`
+  return '다녀왔어요'
+})()
 
 // 탭을 누르면 주소의 해시도 맞춰 둔다. replaceState는 hashchange를 일으키지 않고 방문 기록도 쌓지 않는다
 watch(active, id => {
@@ -61,31 +72,21 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="wrap">
-    <header class="top">
-      <div class="eyebrow">NGO · 2026.10.08–10.11 · 3명</div>
-      <h1>나고야 <span class="gold">3박 4일</span></h1>
-      <p class="sub">부모님과 함께, 많이 걷지 않는 도시 여행</p>
-    </header>
-
-    <nav class="tabs" aria-label="날짜 선택">
-      <div class="tabrow" role="tablist">
-        <button
-          v-for="t in tabs"
-          :id="'tab-' + t.id"
-          :key="t.id"
-          class="tab"
-          role="tab"
-          type="button"
-          :aria-selected="active === t.id"
-          aria-controls="view"
-          @click="active = t.id"
-        >
-          <b>{{ t.label }}</b>
-          <span>{{ t.short }}</span>
-          <i v-if="t.isToday" class="today-dot" aria-label="오늘"></i>
-        </button>
+    <header class="hero">
+      <div class="hero-top">
+        <span class="dday">{{ tripStatus }}</span>
+        <span>2026.10.08 – 10.11 · 3명</span>
       </div>
-    </nav>
+      <h1>나고야</h1>
+      <p class="hero-sub">부모님과 함께, 많이 걷지 않는 3박 4일</p>
+      <div class="hero-flights">
+        <div v-for="f in FLIGHTS" :key="f.code" class="hero-flight">
+          <span class="hf-code">{{ f.code }}</span>
+          <span class="hf-route">{{ f.from.code }} {{ f.from.time }} → {{ f.to.code }}</span>
+          <span class="hf-date">{{ f.date }}</span>
+        </div>
+      </div>
+    </header>
 
     <main id="view">
       <DayView v-if="activeDay" :key="activeDay.id" :day="activeDay" />
@@ -97,6 +98,26 @@ onBeforeUnmount(() => {
       시간은 일본 시각이며 한국과 시차가 없습니다.
     </p>
   </div>
+
+  <nav class="dock" aria-label="날짜 선택">
+    <div class="dock-row" role="tablist">
+      <button
+        v-for="t in tabs"
+        :id="'tab-' + t.id"
+        :key="t.id"
+        class="tab"
+        role="tab"
+        type="button"
+        :aria-selected="active === t.id"
+        aria-controls="view"
+        @click="active = t.id"
+      >
+        <b>{{ t.label }}</b>
+        <span>{{ t.short }}</span>
+        <i v-if="t.isToday" class="today-dot" aria-label="오늘"></i>
+      </button>
+    </div>
+  </nav>
 
   <TaxiCard v-if="taxi" :place="taxi" @close="taxi = null" />
 </template>

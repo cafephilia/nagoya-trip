@@ -34,11 +34,15 @@ onMounted(async () => {
 
 <template>
   <section class="dayhead">
-    <div class="eyebrow">{{ day.label }} · {{ day.short }}</div>
+    <div class="overline">
+      <span class="day-no">{{ day.label }}</span>
+      <span>{{ day.short }}</span>
+      <span v-if="isToday" class="today-pill">오늘</span>
+    </div>
     <h2>{{ day.title }}</h2>
-    <ul class="route">
+    <ol class="route">
       <li v-for="stop in day.route" :key="stop">{{ stop }}</li>
-    </ul>
+    </ol>
     <div v-if="day.callout" class="callout">
       <strong>{{ day.callout.strong }}</strong>{{ day.callout.text }}
     </div>

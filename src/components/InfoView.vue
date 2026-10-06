@@ -40,9 +40,9 @@ const contacts: [string, string][] = [
 
 <template>
   <section class="dayhead">
-    <div class="eyebrow">INFO</div>
+    <div class="overline"><span class="day-no">정보</span><span>출발 전에 확인</span></div>
     <h2>여행 정보</h2>
-    <ul class="route">
+    <ul class="route plain">
       <li>항공권</li><li>숙소</li><li>준비물</li><li>교통</li><li>연락처</li>
     </ul>
   </section>
