@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue'
-import { CHECKLIST, FLIGHTS, HOTEL } from '../data/trip'
+import { CHECKLIST, FIRST_TRIP_TIPS, FLIGHTS, HOTEL } from '../data/trip'
 import { store } from '../utils'
 import MapLink from './MapLink.vue'
 import TaxiButton from './TaxiButton.vue'
@@ -58,7 +58,7 @@ const contacts: [string, string][] = [
     <div class="overline"><span class="day-no">정보</span><span>출발 전에 확인</span></div>
     <h2>여행 정보</h2>
     <ul class="route plain">
-      <li>항공권</li><li>숙소</li><li>준비물</li><li>교통</li><li>연락처</li>
+      <li>항공권</li><li>숙소</li><li>준비물</li><li>여행 팁</li><li>교통</li><li>연락처</li>
     </ul>
   </section>
 
@@ -125,6 +125,19 @@ const contacts: [string, string][] = [
             <input :id="'c-' + c.id" v-model="checked[c.id]" type="checkbox">
             <span>{{ c.title }}<small>{{ c.detail }}</small></span>
           </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h3>처음 일본 여행 팁</h3>
+    <div v-for="g in FIRST_TRIP_TIPS" :key="g.title" class="box">
+      <h4>{{ g.title }}</h4>
+      <ul class="tips">
+        <li v-for="[head, body] in g.items" :key="head">
+          <b>{{ head }}</b>
+          <span>{{ body }}</span>
         </li>
       </ul>
     </div>

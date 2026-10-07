@@ -94,6 +94,11 @@ export interface Flight {
   meta: string[]
 }
 
+export interface TipGroup {
+  title: string
+  items: [head: string, body: string][]
+}
+
 export interface CheckItem {
   id: string
   title: string

@@ -324,3 +324,12 @@ table.tbl td:last-child { text-align: right; font-weight: 700; font-variant-nume
 .way-steps { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 13.5px; line-height: 1.5; }
 .way-steps li::marker { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
 .way-note { margin: 0; font-size: 13px; color: var(--muted); }
+
+/* 처음 일본 여행 팁 */
+.box ul.tips { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+.tips li { display: grid; gap: 2px; padding: 10px 0; font-size: 14px; line-height: 1.55; }
+.tips li:first-child { padding-top: 0; }
+.tips li:last-child { padding-bottom: 0; }
+.tips li + li { border-top: 1px solid var(--line); }
+.tips b { font-weight: 700; }
+.tips span { color: var(--muted); }
