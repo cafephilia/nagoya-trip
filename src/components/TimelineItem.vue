@@ -5,12 +5,13 @@ import { formatYen } from '../utils'
 import KindIcon from './KindIcon.vue'
 import MapLink from './MapLink.vue'
 import TaxiButton from './TaxiButton.vue'
+import WayList from './WayList.vue'
 
 const props = defineProps<{ item: Item; state?: 'past' | 'now' }>()
 
 const hasBody = computed(() => {
   const it = props.item
-  return Boolean(it.facts || it.menu || it.tip || it.map || it.alt || it.taxi)
+  return Boolean(it.ways || it.facts || it.menu || it.tip || it.map || it.alt || it.taxi)
 })
 </script>
 
@@ -35,6 +36,7 @@ const hasBody = computed(() => {
       </component>
 
       <div v-if="hasBody" class="body">
+        <WayList v-if="item.ways" :ways="item.ways" />
         <dl v-if="item.facts" class="facts">
           <template v-for="[label, value] in item.facts" :key="label">
             <dt>{{ label }}</dt>

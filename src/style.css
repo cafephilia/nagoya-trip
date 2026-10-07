@@ -295,3 +295,32 @@ table.tbl td:last-child { text-align: right; font-weight: 700; font-variant-nume
   .btn:hover { border-color: var(--accent); }
   .tab:not([aria-selected="true"]):hover { background: var(--accent-soft); }
 }
+
+/* 이동 방법 */
+.ways { display: grid; gap: 8px; }
+.ways-label { font-size: 11.5px; font-weight: 700; color: var(--muted); letter-spacing: .04em; }
+.way-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.way { background: var(--bg); border: 1px solid transparent; border-radius: var(--r-md); padding: 12px 14px; display: grid; gap: 8px; }
+.way.best { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+.way-head { display: grid; grid-template-columns: 32px 1fr auto; align-items: center; gap: 10px; }
+.way-icon {
+  --mc: var(--k-move);
+  width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center;
+  background: var(--surface); color: var(--mc);
+}
+.way-icon svg { width: 18px; height: 18px; }
+.way-icon.m-walk { --mc: var(--k-sight); }
+.way-icon.m-subway { --mc: var(--k-flight); }
+.way-icon.m-train { --mc: var(--k-stay); }
+.way-icon.m-bus { --mc: var(--k-food); }
+.way-icon.m-taxi { --mc: var(--k-shop); }
+.way-title { min-width: 0; }
+.way-mode { display: flex; align-items: center; gap: 6px; font-size: 14.5px; font-weight: 700; }
+.way-best { background: var(--accent); color: var(--on-accent); font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+.way-label { font-size: 13px; color: var(--muted); }
+.way-stats { display: grid; justify-items: end; gap: 1px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.way-time { font-size: 14px; font-weight: 700; }
+.way-cost { font-size: 12.5px; color: var(--muted); }
+.way-steps { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 13.5px; line-height: 1.5; }
+.way-steps li::marker { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.way-note { margin: 0; font-size: 13px; color: var(--muted); }
