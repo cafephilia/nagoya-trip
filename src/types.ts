@@ -1,6 +1,7 @@
-export type Kind = 'flight' | 'move' | 'sight' | 'shop' | 'food' | 'stay'
+export type Kind = 'prep' | 'flight' | 'move' | 'sight' | 'shop' | 'food' | 'stay'
 
 export const KIND_LABEL: Record<Kind, string> = {
+  prep: '준비',
   flight: '항공',
   move: '이동',
   sight: '관광',
@@ -91,6 +92,8 @@ export interface Item {
   optional?: boolean
   /** 선택 일정에서 고를 수 있는 장소 목록 */
   picks?: Pick[]
+  /** 짐 목록 진행도와 열기 버튼을 보여준다 (출발 전 카드) */
+  packing?: boolean
   /** 카드에 수하물 규정 버튼을 보여준다 (공항 체크인·보안검색) */
   baggage?: boolean
   /** 동선 지도에 찍을 위치 [위도, 경도]. 없으면 지도에서 빠진다 */

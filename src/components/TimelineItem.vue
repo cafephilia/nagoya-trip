@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { computed, inject } from 'vue'
 import { KIND_LABEL, type Item } from '../types'
-import { formatYen, openBaggageKey } from '../utils'
+import { PACKING } from '../data/trip'
+import { packDone, packed, packTotal } from '../packing'
+import { formatYen, openBaggageKey, openPackKey } from '../utils'
 import KindIcon from './KindIcon.vue'
 import MapLink from './MapLink.vue'
 import MenuButton from './MenuButton.vue'
@@ -17,6 +19,15 @@ const hasBody = computed(() => {
 })
 
 const openBaggage = inject(openBaggageKey, () => {})
+const openPack = inject(openPackKey, () => {})
+
+/** 아직 안 챙긴 것 앞의 두 개만 보여주고 나머지는 개수로 줄인다 */
+const packLeft = computed(() => {
+  const left = PACKING.flatMap(g => g.items).filter(c => !packed[c.id]).map(c => c.title)
+  if (!left.length) return '다 챙겼어요.'
+  const head = left.slice(0, 2).join(', ')
+  return left.length > 2 ? `남은 것: ${head} 외 ${left.length - 2}개` : `남은 것: ${head}`
+})
 </script>
 
 <template>
@@ -43,6 +54,17 @@ const openBaggage = inject(openBaggageKey, () => {})
         <div class="title">{{ item.title }}</div>
         <div v-if="item.ja" class="ja sub">{{ item.ja }}</div>
         <div v-if="item.note" class="note">{{ item.note }}</div>
+        <div v-if="item.packing" class="pack-card">
+          <div class="pc-row">
+            <div class="pack-bar" aria-hidden="true"><i :style="{ width: (packDone / packTotal) * 100 + '%' }"></i></div>
+            <span class="prog">{{ packDone }}/{{ packTotal }}</span>
+          </div>
+          <p class="pc-left">{{ packLeft }}</p>
+          <div class="actions">
+            <button class="btn solid" type="button" @click="openPack()">목록 열기</button>
+            <button class="btn" type="button" @click="openBaggage()">수하물 규정</button>
+          </div>
+        </div>
       </component>
 
       <div v-if="hasBody" class="body">

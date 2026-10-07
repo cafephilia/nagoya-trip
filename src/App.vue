@@ -3,7 +3,6 @@ import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { DAYS, FLIGHTS } from './data/trip'
 import type { MenuBoard, Place } from './types'
 import { localDate, openBaggageKey, openMenuKey, openPackKey, openTaxiKey, store } from './utils'
-import { packDone, packTotal } from './packing'
 import DayView from './components/DayView.vue'
 import FoodView from './components/FoodView.vue'
 import InfoView from './components/InfoView.vue'
@@ -112,13 +111,6 @@ onBeforeUnmount(() => {
           <span class="hf-date">{{ f.date }}</span>
         </div>
       </div>
-      <button class="hero-pack" type="button" @click="packOpen = true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <rect x="4" y="7" width="16" height="13" rx="2.5" /><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M4 12h16" />
-        </svg>
-        <span>출발 전 챙길 것</span>
-        <span class="hp-count" :class="{ done: packDone === packTotal }">{{ packDone }}/{{ packTotal }}</span>
-      </button>
     </header>
 
     <main id="view">
