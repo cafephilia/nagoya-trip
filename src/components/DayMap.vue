@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import type { Map as LeafletMap } from 'leaflet'
-import type { Day, Kind, LatLng } from '../types'
+import { WAY_LABEL, type Day, type Kind, type LatLng, type Path, type PathMode } from '../types'
 import { dirUrl, store } from '../utils'
 
 const props = defineProps<{ day: Day }>()
@@ -16,18 +16,80 @@ interface Stop {
   query: string
   /** day.items 안의 위치 */
   index: number
+  /** 앞 장소에서 여기까지 역·정류장 단위 경로 */
+  path?: Path
+  /** 경로를 글로 줄인 것. 예: ['도보', '사카에역', '히가시야마선 1정거장', '후시미역', '도보'] */
+  via: string[]
 }
 
-/** 위치가 있는 일정을 순서대로 모으고, 같은 곳에 이어지는 일정은 하나로 합친다 */
+const modeLabel = (m: PathMode, passed: number) =>
+  m.mode === 'subway' && m.line ? `${m.line} ${passed + 1}정거장` : m.line ?? WAY_LABEL[m.mode]
+
+/** 지나가는 역은 빼고, 지하철은 몇 정거장인지 붙인다 */
+function describe(path: Path): string[] {
+  const parts: string[] = []
+  let mode: PathMode | undefined
+  let passed = 0
+  for (const el of path) {
+    if (!('pos' in el)) {
+      mode = el
+      passed = 0
+    } else if (el.pass) {
+      passed++
+    } else {
+      if (mode) parts.push(modeLabel(mode, passed))
+      parts.push(el.name)
+      mode = undefined
+    }
+  }
+  if (mode) parts.push(modeLabel(mode, passed))
+  return parts
+}
+
+/**
+ * 위치가 있는 일정을 순서대로 모으고, 같은 곳에 이어지는 일정은 하나로 합친다.
+ * 위치 없는 이동 일정에 적힌 경로는 다음 장소로 가는 경로로 본다
+ */
 const stops = computed(() => {
   const out: Stop[] = []
+  let pending: Path = []
   props.day.items.forEach((it, index) => {
+    if (it.path) pending = [...pending, ...it.path]
     if (!it.pos) return
     const prev = out[out.length - 1]
-    if (prev && prev.pos[0] === it.pos[0] && prev.pos[1] === it.pos[1]) return
-    out.push({ pos: it.pos, t: it.t, title: it.title, kind: it.k, query: it.map ?? it.pos.join(','), index })
+    if (prev && prev.pos[0] === it.pos[0] && prev.pos[1] === it.pos[1]) {
+      pending = []
+      return
+    }
+    const path = prev && pending.length ? pending : undefined
+    out.push({
+      pos: it.pos, t: it.t, title: it.title, kind: it.k, query: it.map ?? it.pos.join(','), index,
+      path, via: path ? describe(path) : [],
+    })
+    pending = []
   })
   return out
+})
+
+/** 이날 지도에 나오는 선 종류만 범례로 보여준다 */
+const legend = computed(() => {
+  const out = new Map<string, { label: string; kind: string; color: string }>()
+  for (const s of stops.value.slice(1)) {
+    if (!s.path) {
+      out.set('other', { label: '그 밖의 이동', kind: 'dashed', color: 'var(--accent)' })
+      continue
+    }
+    for (const el of s.path) {
+      if ('pos' in el) continue
+      if (el.mode === 'walk') out.set('walk', { label: '도보', kind: 'dotted', color: 'var(--muted)' })
+      else {
+        const fallback = el.mode === 'subway' ? 'var(--k-flight)' : el.mode === 'bus' ? 'var(--k-food)' : 'var(--k-stay)'
+        const label = el.line ?? WAY_LABEL[el.mode]
+        out.set(label, { label, kind: 'solid', color: el.color ?? fallback })
+      }
+    }
+  }
+  return [...out.values()]
 })
 
 /** 출발·도착 + 경유지 3곳씩 끊고, 다음 구간은 앞 구간의 도착지에서 시작한다 */
@@ -67,8 +129,60 @@ async function draw() {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map)
 
-    const pts = stops.value.map(s => s.pos)
-    L.polyline(pts, { color: css.getPropertyValue('--accent').trim(), weight: 3, opacity: .75, dashArray: '6 7' }).addTo(map)
+    const varColor = (name: string) => css.getPropertyValue(name).trim()
+    /** 걷기는 회색 점선, 지하철은 노선 색, 버스·전철은 종류 색, 경로를 모르는 구간은 녹색 파선 */
+    const lineStyle = (m?: PathMode) => {
+      if (!m) return { color: varColor('--accent'), weight: 3, opacity: .75, dashArray: '6 7' }
+      if (m.mode === 'walk') return { color: varColor('--muted'), weight: 3, opacity: .9, dashArray: '1 6', lineCap: 'round' as const }
+      if (m.mode === 'subway') return { color: m.color ?? varColor('--k-flight'), weight: 5, opacity: .9 }
+      if (m.mode === 'bus') return { color: m.color ?? varColor('--k-food'), weight: 4, opacity: .85 }
+      return { color: m.color ?? varColor('--k-stay'), weight: 4, opacity: .85 }
+    }
+
+    const pts: LatLng[] = []
+    stops.value.forEach((s, i) => {
+      pts.push(s.pos)
+      if (i === 0) return
+      const from = stops.value[i - 1].pos
+      if (!s.path) {
+        L.polyline([from, s.pos], lineStyle()).addTo(map!)
+        return
+      }
+      // 수단이 바뀌거나 내리는 역에서 선을 끊고, 지나가는 역은 같은 선에 잇는다
+      let mode: PathMode | undefined
+      let line: LatLng[] = [from]
+      for (const el of s.path) {
+        if (!('pos' in el)) {
+          mode = el
+          continue
+        }
+        line.push(el.pos)
+        pts.push(el.pos)
+        if (el.pass) continue
+        L.polyline(line, lineStyle(mode)).addTo(map!)
+        line = [el.pos]
+      }
+      line.push(s.pos)
+      L.polyline(line, lineStyle(mode)).addTo(map!)
+
+      // 역·정류장 점. 타고 내리는 역은 크게, 지나가는 역은 작게, 테두리는 그 역을 지나는 노선 색
+      const path = s.path
+      const rideAt = (j: number, step: 1 | -1) => {
+        for (let k = j + step; k >= 0 && k < path.length; k += step) {
+          const el = path[k]
+          if (!('pos' in el)) return el.mode === 'walk' ? undefined : el
+        }
+      }
+      path.forEach((el, j) => {
+        if (!('pos' in el)) return
+        const ride = rideAt(j, -1) ?? rideAt(j, 1)
+        const c = ride ? lineStyle(ride).color : varColor('--muted')
+        L.circleMarker(el.pos, {
+          radius: el.pass ? 3 : 5, color: c, weight: 2, fillColor: '#fff', fillOpacity: 1,
+        }).bindPopup(el.name).addTo(map!)
+      })
+    })
+
     stops.value.forEach((s, i) => {
       const icon = L.divIcon({
         className: 'stop-pin',
@@ -81,7 +195,11 @@ async function draw() {
       popup.innerHTML = '<b></b> <span></span>'
       popup.querySelector('b')!.textContent = s.t
       popup.querySelector('span')!.textContent = s.title
-      L.marker(s.pos, { icon, title: `${i + 1}. ${s.title}` }).bindPopup(popup).addTo(map!)
+      // 사카에처럼 장소가 몰린 곳은 핀이 겹치니, 핀을 누르면 그 주변으로 확대한다
+      L.marker(s.pos, { icon, title: `${i + 1}. ${s.title}` })
+        .bindPopup(popup)
+        .on('click', () => map!.setView(s.pos, Math.max(map!.getZoom(), 15)))
+        .addTo(map!)
     })
     map.fitBounds(L.latLngBounds(pts), { padding: [28, 28], maxZoom: 15 })
   } catch {
@@ -121,12 +239,18 @@ onBeforeUnmount(() => map?.remove())
     <div class="dm-body">
       <div ref="canvas" class="dm-canvas" role="img" :aria-label="day.label + ' 동선 지도'"></div>
       <p v-if="failed" class="dm-note">지도를 불러오지 못했어요. 인터넷에 연결된 뒤 다시 열어 주세요.</p>
+      <ul class="dm-legend" aria-label="선 종류">
+        <li v-for="lg in legend" :key="lg.label">
+          <i :class="lg.kind" :style="{ '--c': lg.color }"></i>{{ lg.label }}
+        </li>
+      </ul>
       <ol class="stops">
         <li v-for="(s, i) in stops" :key="s.index">
           <button type="button" @click="emit('focus', s.index)">
             <span class="stop-no" :style="{ background: `var(--k-${s.kind})` }">{{ i + 1 }}</span>
             <span class="stop-t">{{ s.t }}</span>
             <span class="stop-title">{{ s.title }}</span>
+            <span v-if="s.via.length" class="stop-via">{{ s.via.join(' → ') }}</span>
           </button>
         </li>
       </ol>
@@ -139,7 +263,9 @@ onBeforeUnmount(() => map?.remove())
           <span v-if="links.length > 1" class="dm-range">{{ l.label }}</span>
         </a>
       </div>
-      <p class="dm-note">지도의 점선은 순서만 이은 직선이에요. 실제 길과 교통편은 구글 지도 길찾기에서 보세요. 지도 그림은 인터넷이 있어야 보여요.</p>
+      <p class="dm-note">
+        역과 역 사이는 직선으로 이어서 실제 길과는 달라요. 실제 길은 구글 지도 길찾기에서 보세요. 지도 그림은 인터넷이 있어야 보여요.
+      </p>
     </div>
   </details>
 </template>

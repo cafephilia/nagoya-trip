@@ -476,6 +476,12 @@ table.tbl td:last-child { text-align: right; font-weight: 700; font-variant-nume
 }
 .stop-t { font-weight: 700; font-variant-numeric: tabular-nums; }
 .stop-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.box .dm-legend { list-style: none; margin-top: -2px; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; color: var(--muted); }
+.dm-legend li { display: flex; align-items: center; gap: 6px; }
+.dm-legend i { width: 20px; border-top: 4px solid var(--c); border-radius: 2px; }
+.dm-legend i.dotted { border-top-style: dotted; }
+.dm-legend i.dashed { border-top: 3px dashed var(--c); }
+.stop-via { grid-column: 2 / -1; margin-top: -4px; font-size: 12.5px; color: var(--muted); line-height: 1.45; }
 .stop-pin { background: none; border: 0; }
 .stop-pin span {
   width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;

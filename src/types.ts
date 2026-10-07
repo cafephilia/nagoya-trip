@@ -95,9 +95,34 @@ export interface Item {
   baggage?: boolean
   /** 동선 지도에 찍을 위치 [위도, 경도]. 없으면 지도에서 빠진다 */
   pos?: LatLng
+  /** 앞 장소에서 이번(또는 다음) 지도 장소까지 역·정류장 단위 경로 */
+  path?: Path
 }
 
 export type LatLng = [lat: number, lng: number]
+
+/** 동선 지도에 찍는 역·정류장·출입구 */
+export interface PathStop {
+  name: string
+  pos: LatLng
+  /** 내리지 않고 지나가는 역 */
+  pass?: boolean
+}
+
+/** 다음 지점까지 타고 가는 수단 */
+export interface PathMode {
+  mode: WayMode
+  /** 노선 이름. 예: '메이조선' */
+  line?: string
+  /** 노선 색 */
+  color?: string
+}
+
+/**
+ * 앞 장소에서 이 장소까지의 세부 경로. 수단과 지점을 번갈아 적고 수단으로 끝난다.
+ * 예: [도보, 사카에역, 히가시야마선, 후시미역, 도보]
+ */
+export type Path = (PathMode | PathStop)[]
 
 export interface Pick {
   title: string

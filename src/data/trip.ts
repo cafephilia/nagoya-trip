@@ -1,4 +1,4 @@
-import type { CheckItem, Day, Flight, Item, LatLng, PackGroup, Pick, Place, TipGroup } from '../types'
+import type { CheckItem, Day, Flight, Item, LatLng, PackGroup, PathMode, PathStop, Pick, Place, TipGroup } from '../types'
 import { PHOTOS, SPOT_PHOTOS } from './photos'
 
 // 정보 확인일 2026-10-07
@@ -31,6 +31,32 @@ const POS = {
   yabaton: [35.16163, 136.90625],
   donki: [35.17010, 136.90657],
 } satisfies Record<string, LatLng>
+
+// 동선 지도의 역·정류장 (OpenStreetMap 역 위치, 정류장은 국토지리원 주소 검색)
+const ST = {
+  sakae: { name: '사카에역', pos: [35.16970, 136.90870] },
+  fushimi: { name: '후시미역', pos: [35.16923, 136.89735] },
+  hisaya: { name: '히사야오도리역', pos: [35.17376, 136.90815] },
+  nagoyajo: { name: '나고야조역', pos: [35.18161, 136.90553] },
+  castleEast: { name: '나고야성 동문', pos: [35.18402, 136.90310] },
+  yabacho: { name: '야바초역', pos: [35.16309, 136.90867] },
+  kamimaezu: { name: '가미마에즈역', pos: [35.15737, 136.90670] },
+  higashibetsuin: { name: '히가시베쓰인역', pos: [35.14986, 136.90454] },
+  kanayama: { name: '가나야마역', pos: [35.14392, 136.90197] },
+  nishitakakura: { name: '니시타카쿠라역', pos: [35.13461, 136.90200] },
+  jinguNishi: { name: '아쓰타진구니시역', pos: [35.12790, 136.90673] },
+  tokyuStop: { name: '나고야 도큐호텔 정류장', pos: [35.16921, 136.91379] },
+  // 리무진 사카에 하차 위치는 오아시스21 버스터미널 부근으로 잡았다
+  sakaeStop: { name: '사카에 정류장', pos: [35.17109, 136.90964] },
+} satisfies Record<string, PathStop>
+
+/** 지나가기만 하는 역 */
+const pass = (s: PathStop): PathStop => ({ ...s, pass: true })
+
+const WALK: PathMode = { mode: 'walk' }
+const HIGASHIYAMA: PathMode = { mode: 'subway', line: '히가시야마선', color: '#e0a100' }
+const MEIJO: PathMode = { mode: 'subway', line: '메이조선', color: '#7d4f9e' }
+const LIMO: PathMode = { mode: 'bus', line: '센트레아 리무진' }
 
 export const FLIGHTS: Flight[] = [
   {
@@ -239,6 +265,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '16:35', k: 'move', title: '사카에 하차 → 호텔', taxi: HOTEL,
+        path: [LIMO, pass(ST.tokyuStop), ST.sakaeStop, WALK],
         note: '사카에에서 내려 호텔까지 걸어요.', dur: '10m',
         ways: [
           { mode: 'walk', label: '사카에 → 호텔', time: '약 5–10분', best: true, note: '하차 위치에 따라 달라요. 지도 링크로 호텔 방향을 확인하세요.' },
@@ -253,6 +280,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '17:30', pos: POS.okafuji, k: 'food', title: '저녁 · 히쓰마부시 우나우 오카후지', photo: SPOT_PHOTOS.okafuji, ja: '鰻う おか冨士', menuId: 'okafuji', badges: ['예약 추천'],
+        path: [WALK, ST.sakae, HIGASHIYAMA, ST.fushimi, WALK],
         note: '나고야 명점 「숯불구이 우나후지」의 첫 공식 분점. 장어 百名店 2024·2026, 미쉐린 빕 구르망. 숯불에 구워 겉은 바삭하고 속은 부드러운 히쓰마부시로 나고야 첫 저녁을 시작해요.',
         ways: [
           {
@@ -317,6 +345,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '19:00', pos: POS.mirai, k: 'sight', title: '미라이타워 전망대 야경', photo: PHOTOS.mirai, ja: '中部電力 MIRAI TOWER',
+        path: [WALK, ST.fushimi, HIGASHIYAMA, ST.sakae, WALK],
         note: '해가 진 뒤라 불 켜진 나고야 시내가 한눈에 보여요. 후시미역에서 사카에역으로 돌아와 히사야오도리 공원까지 걸어요.', dur: '40m',
         ways: [
           {
@@ -334,6 +363,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '19:45', pos: POS.oasis, k: 'sight', title: '오아시스21 「물의 우주선」 야경', photo: PHOTOS.oasis, ja: 'オアシス21',
+        path: [WALK],
         note: '미라이타워에서 길 건너 바로. 조명이 들어온 유리 지붕 위를 한 바퀴 걸어요. 무료.', dur: '30m',
         ways: [{ mode: 'walk', label: '미라이타워 → 오아시스21 190m', time: '3분', best: true }],
         facts: [['영업', '옥상 10:00–21:00 · 무료'], ['참고', '사카에역 지하와 연결돼 있어요']],
@@ -529,6 +559,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '19:00', pos: POS.gomitori, k: 'food', title: '저녁 · 나고야 이자카야 고미토리 본점', badges: ['예약 추천'], photo: PHOTOS.tebasaki, ja: '名古屋めし居酒屋 伍味酉 本店', menuId: 'gomitori',
+        path: [WALK],
         note: '1956년 창업한 나고야 음식 이자카야. 데바사키, 도테미소 꼬치, 히쓰마부시까지 나고야 음식을 한 번에 맛봐요. 새벽까지 열어 투어가 늦어져도 괜찮아요.',
         ways: [{ mode: 'walk', label: '미라이타워 → 가게', time: '약 10분', best: true, note: '사카에역 8번 출구에서 도보 3분, 지하 1층. 도보 시간은 주소로 계산한 추정치예요.' }],
         facts: [
@@ -577,6 +608,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '09:15', pos: POS.castle, k: 'sight', title: '나고야성 · 혼마루고텐', photo: PHOTOS.castle, ja: '名古屋城・本丸御殿',
+        path: [WALK, ST.hisaya, MEIJO, ST.nagoyajo, WALK, ST.castleEast, WALK],
         note: '천수각은 복원 공사로 들어갈 수 없고 외관만 볼 수 있어요. 금박 장벽화가 있는 혼마루고텐이 핵심.', dur: '2h',
         facts: [
           ['요금', '1인 1,000엔 (10/1부터 인상, 65세 할인은 나고야 시민만) · 고텐 포함'],
@@ -590,6 +622,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '11:15', pos: POS.kinshachi, k: 'shop', title: '긴샤치요코초 둘러보기', photo: PHOTOS.kinshachi, ja: '金シャチ横丁',
+        path: [WALK],
         note: '나고야성 정문 앞 먹거리 골목. 에도풍 건물에 나고야 음식점과 기념품 가게가 모여 있어요.', dur: '1h',
         facts: [
           ['구역', '정문 쪽 요시나오 존(10:30–17:30 무렵), 동문 쪽 무네하루 존(11:00–22:00 무렵)'],
@@ -612,6 +645,11 @@ export const DAYS: Day[] = [
       },
       {
         t: '13:10', k: 'move', title: '나고야성 → 아쓰타 신궁 서문', ja: '熱田神宮 西門',
+        path: [
+          WALK, ST.nagoyajo, MEIJO,
+          pass(ST.hisaya), pass(ST.sakae), pass(ST.yabacho), pass(ST.kamimaezu), pass(ST.higashibetsuin), pass(ST.kanayama), pass(ST.nishitakakura),
+          ST.jinguNishi, WALK,
+        ],
         note: '나고야조역에서 메이조선을 갈아타지 않고 남쪽 끝 아쓰타까지 한 번에 내려가요.', dur: '35m',
         taxi: { ja: '熱田神宮 西門', addr: '名古屋市熱田区神宮1-1-1' },
         ways: [
@@ -643,6 +681,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '15:00', k: 'move', title: '아쓰타 → 오스 상점가', ja: '大須商店街',
+        path: [WALK, ST.jinguNishi, MEIJO, pass(ST.nishitakakura), pass(ST.kanayama), pass(ST.higashibetsuin), ST.kamimaezu, WALK],
         note: '메이조선을 타고 북쪽으로 4정거장 올라가 가미마에즈역. 상점가 동쪽 입구가 바로 앞이에요.', dur: '20m',
         ways: [
           {
@@ -670,12 +709,14 @@ export const DAYS: Day[] = [
       },
       {
         t: '17:20', pos: POS.osuKannon, k: 'sight', title: '오스 칸논', photo: PHOTOS.osukannon, ja: '大須観音',
+        path: [WALK],
         note: '상점가 서쪽 끝의 절. 붉은 본당 앞에서 사진 한 장.', dur: '20m',
         facts: [['영업', '본당 06:00–19:00 · 무료'], ['주소', '名古屋市中区大須2-21-47']],
         map: '大須観音',
       },
       {
         t: '18:30', pos: POS.yabaton, k: 'food', title: '저녁 · 미소카츠 야바톤 야바초 본점', badges: ['예약 필수', '줄 김'], photo: PHOTOS.yabaton, ja: 'みそかつ 矢場とん 矢場町本店', menuId: 'yabaton',
+        path: [WALK],
         note: '1947년 창업한 미소카츠 본가. 연휴 토요일 저녁이라 예약하고 가세요.',
         ways: [
           {
@@ -699,6 +740,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '19:45', k: 'move', title: '걸어서 사카에로', ja: '大津通 → 栄',
+        path: [WALK],
         note: '오쓰도리를 따라 북쪽으로 걸어요. 불 켜진 사카에 번화가와 백화점을 지나 오아시스21까지.', dur: '20m',
         ways: [
           {
@@ -719,6 +761,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '20:30', pos: POS.donki, k: 'shop', title: '돈키호테 사카에 본점 쇼핑', ja: 'ドン・キホーテ 栄本店',
+        path: [WALK],
         note: '과자, 화장품, 의약품, 기념품까지 한 번에. 24시간 영업이라 시간 걱정 없이 마지막 쇼핑을 해요.', dur: '45m',
         ways: [{ mode: 'walk', label: '오아시스21 → 돈키호테', time: '약 5분', best: true, note: '사카에역 1번 출구 바로 앞, 호텔까지는 도보 약 3분이에요.' }],
         facts: [
@@ -758,6 +801,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '10:45', pos: POS.oasis, k: 'move', title: '체크아웃 → 오아시스21 → 리무진 버스', ja: 'セントレアリムジン 栄(オアシス21 9番のりば)',
+        path: [WALK],
         note: '오아시스21 버스터미널에서 리무진을 타면 갈아타지 않고 공항 제1터미널까지 가요. 11:10 버스는 현금을 받지 않으니 교통 IC나 신용카드 터치로 내세요.', dur: '약 1h 20m',
         taxi: { ja: 'オアシス21 バスターミナル', addr: '名古屋市東区東桜1-11-1' },
         ways: [
@@ -785,6 +829,7 @@ export const DAYS: Day[] = [
       },
       {
         t: '12:05', pos: POS.centrair, k: 'shop', title: '공항 4층 스카이타운 구경', ja: 'セントレア スカイタウン',
+        path: [LIMO],
         note: '체크인이 12:30에 열리니 그 전까지 4층 상점가에서 마지막 기념품을 사요. 보안검색 전 구역이에요.', dur: '25m',
         map: '中部国際空港 スカイタウン',
       },
