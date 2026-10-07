@@ -10,8 +10,6 @@ import MenuButton from './MenuButton.vue'
 const ALL = '전체'
 const genre = ref(ALL)
 const area = ref(ALL)
-const ytOnly = ref(false)
-const ytCount = FOOD_SPOTS.filter(s => s.youtuber).length
 
 const uniq = (xs: string[]) => [ALL, ...new Set(xs)]
 const genres = computed(() => uniq(FOOD_SPOTS.map(s => s.genre)))
@@ -20,8 +18,7 @@ const areas = computed(() => uniq(FOOD_SPOTS.map(s => s.area)))
 const spots = computed(() =>
   FOOD_SPOTS.filter(s =>
     (genre.value === ALL || s.genre === genre.value)
-    && (area.value === ALL || s.area === area.value)
-    && (!ytOnly.value || s.youtuber)),
+    && (area.value === ALL || s.area === area.value)),
 )
 </script>
 
@@ -33,7 +30,6 @@ const spots = computed(() =>
   </section>
 
   <div class="filters" role="group" aria-label="종류">
-    <button type="button" class="fchip yt" :aria-pressed="ytOnly" @click="ytOnly = !ytOnly">유튜버 추천 {{ ytCount }}</button>
     <button v-for="g in genres" :key="g" type="button" class="fchip" :aria-pressed="genre === g" @click="genre = g">{{ g }}</button>
   </div>
   <div class="filters" role="group" aria-label="지역">
