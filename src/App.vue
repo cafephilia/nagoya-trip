@@ -78,7 +78,7 @@ onBeforeUnmount(() => {
         <span>2026.10.08 – 10.11 · 3명</span>
       </div>
       <h1>나고야</h1>
-      <p class="hero-sub">부모님과 함께하는 3박 4일</p>
+      <p class="hero-sub">가족과 함께하는 3박 4일</p>
       <div class="hero-flights">
         <div v-for="f in FLIGHTS" :key="f.code" class="hero-flight">
           <span class="hf-code">{{ f.code }}</span>
