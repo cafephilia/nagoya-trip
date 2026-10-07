@@ -67,7 +67,7 @@ npm run build   # 타입 검사 + dist 빌드
 
 ## 사진 출처
 
-관광지 카드 사진은 위키미디어 커먼즈의 자유 라이선스 사진을 960px로 줄여 `public/photos`에 넣었습니다.
+관광지·식당 카드 사진은 위키미디어 커먼즈의 자유 라이선스 사진을 960px로 줄여 `public/photos`에 넣었습니다.
 
 | 장소 | 작가 | 라이선스 | 원본 |
 |---|---|---|---|
@@ -82,3 +82,9 @@ npm run build   # 타입 검사 + dist 빌드
 | 시라카와고 | DimiTalen | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Overview_of_Ogimachi,_Shirakawa,_from_the_Ogimachi_Castle_observation_point.jpg) |
 | 가을 다카야마 마쓰리 | Sjaak Kempe | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:20131010_22_Takayama_-_Autumn_festival_(10491439093).jpg) |
 | 구조하치만 | Asturio Cantabrio | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Gujo-Hachiman_Yoshida_River_2019-08_ac.jpg) |
+| 세카이노 야마짱 (데바사키) | Nissy-KITAQ | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Sekai_no_Yamachan_tebasaki.JPG) |
+| 고미토리 카드 (데바사키 예시) | Geographer | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Nagoya_chicken_wings.jpg) |
+| 하쿠스이엔 카드 (호바미소 예시) | Gofukuji | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Hida_beef_with_Hoba-miso.jpg) |
+| 야마모토야 소혼케 (미소니코미 우동) | Asturio Cantabrio | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Yamamotoya_Sohonke_Misonikomi_Udon_2020-11_ac.jpg) |
+| 야바톤 (미소카츠) | Akahito Yamabe | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Yabaton%27s_misokatsu_%EF%BC%88Nagoya_soul_food%EF%BC%89.jpg) |
+| 마루하 식당 | Kanesue | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:%E3%81%BE%E3%82%8B%E3%81%AF%E9%A3%9F%E5%A0%82_-_13993916259.jpg) |

@@ -23,7 +23,7 @@ const hasBody = computed(() => {
       <component :is="hasBody ? 'summary' : 'div'" class="head">
         <figure v-if="item.photo" class="photo">
           <img :src="item.photo.src" :alt="item.title" loading="lazy" decoding="async">
-          <figcaption>{{ item.photo.author }} · {{ item.photo.license }}</figcaption>
+          <figcaption><template v-if="item.photo.example">예시 사진 · </template>{{ item.photo.author }} · {{ item.photo.license }}</figcaption>
         </figure>
         <div class="meta">
           <span class="time">{{ item.t }}</span>
@@ -96,6 +96,7 @@ const hasBody = computed(() => {
           사진: <a :href="item.photo.source" target="_blank" rel="noopener">{{ item.photo.author }}</a>,
           <a :href="item.photo.licenseUrl" target="_blank" rel="noopener">{{ item.photo.license }}</a>,
           위키미디어 커먼즈 (크기 조정)
+          <template v-if="item.photo.example"><br>{{ item.photo.example }}.</template>
         </p>
       </div>
     </component>

@@ -58,6 +58,8 @@ export interface Photo {
   licenseUrl: string
   /** 원본 파일 페이지 */
   source: string
+  /** 이 가게에서 찍은 사진이 아닐 때 알려 주는 문구 */
+  example?: string
 }
 
 export interface Item {
