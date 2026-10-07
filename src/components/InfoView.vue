@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue'
-import { CHECKLIST, FIRST_TRIP_TIPS, FLIGHTS, HOTEL } from '../data/trip'
+import { CHECKLIST, FIRST_TRIP_TIPS, FLIGHTS, HOTEL, USEFUL_APPS } from '../data/trip'
 import { store } from '../utils'
 import MapLink from './MapLink.vue'
 import TaxiButton from './TaxiButton.vue'
+import TipGroups from './TipGroups.vue'
 
 const checked = reactive<Record<string, boolean>>(
   Object.fromEntries(CHECKLIST.map(c => [c.id, store.get('nagoya-ck-' + c.id) === '1'])),
@@ -58,7 +59,7 @@ const contacts: [string, string][] = [
     <div class="overline"><span class="day-no">정보</span><span>출발 전에 확인</span></div>
     <h2>여행 정보</h2>
     <ul class="route plain">
-      <li>항공권</li><li>숙소</li><li>준비물</li><li>여행 팁</li><li>교통</li><li>연락처</li>
+      <li>항공권</li><li>숙소</li><li>준비물</li><li>여행 팁</li><li>앱</li><li>교통</li><li>연락처</li>
     </ul>
   </section>
 
@@ -132,22 +133,12 @@ const contacts: [string, string][] = [
 
   <div class="sec">
     <h3>처음 일본 여행 팁</h3>
-    <details v-for="g in FIRST_TRIP_TIPS" :key="g.title" class="box tip-group">
-      <summary>
-        <span class="tg-title">{{ g.title }}</span>
-        <span class="tg-count">{{ g.items.length }}</span>
-        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m6 9 6 6 6-6" />
-        </svg>
-      </summary>
-      <ul class="tips">
-        <li v-for="[head, body] in g.items" :key="head">
-          <b>{{ head }}</b>
-          <span>{{ body }}</span>
-        </li>
-      </ul>
-    </details>
+    <TipGroups :groups="FIRST_TRIP_TIPS" />
+  </div>
+
+  <div class="sec">
+    <h3>유용한 앱</h3>
+    <TipGroups :groups="USEFUL_APPS" />
   </div>
 
   <div class="sec">
