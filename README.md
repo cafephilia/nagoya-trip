@@ -109,3 +109,5 @@ npm run build   # 타입 검사 + dist 빌드
 | 맛집 · 마츠무라 (건물) | JKT-c | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Dai-Nagoya_Building_-_01.JPG) |
 | 맛집 · 포파이 (정식 예시) | 円周率３パーセント | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Roast_katsu_%26_fried_salmon_set_20200522-02.jpg) |
 | 맛집 · 아지사이 (완탕면 예시) | ジョンドウ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:%E6%9D%A5%E6%9D%A5%E8%BB%92%E3%83%AF%E3%83%B3%E3%82%BF%E3%83%B3%E9%BA%BA.jpg) |
+| 맛집 · 코프트알코 (스파이스 카레 예시) | 経済特区 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%9C%E3%83%BC%E3%82%B9%E3%83%91%E3%82%A4%E3%82%B9%E3%81%AE%E3%82%AB%E3%83%AC%E3%83%BC(20210508).jpg) |
+| 맛집 · 츠바메빵 (달걀 샌드 예시) | Ocdp | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Egg_Sandwich_001.jpg) |
