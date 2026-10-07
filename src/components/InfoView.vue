@@ -59,9 +59,21 @@ const contacts: [string, string][] = [
     <div class="overline"><span class="day-no">정보</span><span>출발 전에 확인</span></div>
     <h2>여행 정보</h2>
     <ul class="route plain">
-      <li>항공권</li><li>숙소</li><li>준비물</li><li>여행 팁</li><li>앱</li><li>교통</li><li>연락처</li>
+      <li>오프라인</li><li>항공권</li><li>숙소</li><li>준비물</li><li>여행 팁</li><li>앱</li><li>교통</li><li>연락처</li>
     </ul>
   </section>
+
+  <div class="sec">
+    <h3>인터넷 없이 보기</h3>
+    <div class="box">
+      <ul>
+        <li>이 페이지를 인터넷이 될 때 한 번 열어 두면 일정, 사진, 메뉴판이 휴대폰에 저장돼요. 일본에서 데이터가 끊겨도 열 수 있어요.</li>
+        <li>구글 지도 링크와 출처 링크는 인터넷이 있어야 열려요.</li>
+        <li>홈 화면에 추가하면 앱처럼 열려요. 아이폰은 사파리 공유 버튼 → 홈 화면에 추가, 안드로이드는 크롬 메뉴(⋮) → 홈 화면에 추가.</li>
+        <li>출발 전에 와이파이에서 한 번 열고, 각 날짜 탭과 맛집 탭을 한 번씩 눌러 두면 가장 확실해요.</li>
+      </ul>
+    </div>
+  </div>
 
   <div class="sec">
     <h3>항공권 · Peach Standard Plus</h3>
