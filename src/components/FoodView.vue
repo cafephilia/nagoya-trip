@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { FOOD_SPOTS } from '../data/foodspots'
 import { SPOT_PHOTOS } from '../data/photos'
 import { formatYen } from '../utils'
+import Badges from './Badges.vue'
 import MapLink from './MapLink.vue'
 
 const ALL = '전체'
@@ -48,6 +49,7 @@ const spots = computed(() =>
           <div class="meta">
             <span class="kind">{{ s.genre }}</span>
             <span class="dur">{{ s.area }}</span>
+            <Badges :badges="s.badges" />
             <span v-if="s.inItinerary" class="opt-pill">일정에 있음</span>
             <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

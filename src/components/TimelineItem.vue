@@ -5,6 +5,7 @@ import { formatYen } from '../utils'
 import KindIcon from './KindIcon.vue'
 import MapLink from './MapLink.vue'
 import MenuButton from './MenuButton.vue'
+import Badges from './Badges.vue'
 import TaxiButton from './TaxiButton.vue'
 import WayList from './WayList.vue'
 
@@ -28,6 +29,7 @@ const hasBody = computed(() => {
         <div class="meta">
           <span class="time">{{ item.t }}</span>
           <span class="kind">{{ KIND_LABEL[item.k] }}</span>
+          <Badges :badges="item.badges" />
           <span v-if="item.optional" class="opt-pill">선택</span>
           <span v-if="item.dur" class="dur">{{ item.dur }}</span>
           <span v-if="state === 'now'" class="now-pill">지금</span>
@@ -57,7 +59,7 @@ const hasBody = computed(() => {
         </ul>
         <ol v-if="item.picks" class="picks">
           <li v-for="p in item.picks" :key="p.title" class="pick">
-            <div class="pick-kind">{{ p.kind }}</div>
+            <div class="pick-kind">{{ p.kind }} <Badges :badges="p.badges" /></div>
             <div class="alt-title">{{ p.title }}</div>
             <div class="ja sub">{{ p.ja }}</div>
             <div class="note">{{ p.note }}</div>
@@ -83,7 +85,7 @@ const hasBody = computed(() => {
           <TaxiButton v-if="item.taxi" :place="item.taxi" />
         </div>
         <div v-if="item.alt" class="alt">
-          <div class="alt-label">대안</div>
+          <div class="alt-label">대안 <Badges :badges="item.alt.badges" /></div>
           <div class="alt-title">{{ item.alt.title }}</div>
           <div class="ja sub">{{ item.alt.ja }}</div>
           <div class="note">{{ item.alt.note }}</div>

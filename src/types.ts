@@ -16,6 +16,9 @@ export interface Place {
   tel?: string
 }
 
+/** 예약·대기 상태 배지 */
+export type Badge = '예약 필수' | '예약 추천' | '예약 불가' | '줄 김'
+
 export interface Alt {
   title: string
   ja: string
@@ -23,6 +26,7 @@ export interface Alt {
   map: string
   /** MENUS의 키 */
   menuId?: string
+  badges?: Badge[]
 }
 
 export type WayMode = 'walk' | 'subway' | 'bus' | 'train' | 'taxi'
@@ -82,6 +86,7 @@ export interface Item {
   photo?: Photo
   /** MENUS의 키. 카드에 메뉴판 버튼을 보여준다 */
   menuId?: string
+  badges?: Badge[]
   /** 기분과 체력에 따라 고르는 선택 일정 */
   optional?: boolean
   /** 선택 일정에서 고를 수 있는 장소 목록 */
@@ -97,6 +102,7 @@ export interface Pick {
   facts: [label: string, value: string][]
   map: string
   menuId?: string
+  badges?: Badge[]
 }
 
 export interface Callout {
@@ -185,4 +191,5 @@ export interface FoodSpot {
   map: string
   sources: string[]
   inItinerary?: boolean
+  badges?: Badge[]
 }
