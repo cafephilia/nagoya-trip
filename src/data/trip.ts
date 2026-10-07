@@ -93,7 +93,7 @@ const DRINK_PICKS: Pick[] = [
 
 const drinksItem = (t: string, note: string): Item => ({
   t, k: 'food', optional: true,
-  title: '선택 · 호텔 근처에서 한잔',
+  title: '호텔 근처에서 한잔',
   ja: '錦三・栄',
   note,
   picks: DRINK_PICKS,
