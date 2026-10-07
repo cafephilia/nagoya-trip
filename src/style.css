@@ -333,3 +333,17 @@ table.tbl td:last-child { text-align: right; font-weight: 700; font-variant-nume
 .tips li + li { border-top: 1px solid var(--line); }
 .tips b { font-weight: 700; }
 .tips span { color: var(--muted); }
+.box.tip-group { padding: 0; overflow: hidden; }
+.tip-group > summary {
+  list-style: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  display: flex; align-items: center; gap: 8px; padding: 14px 16px;
+}
+.tip-group > summary::-webkit-details-marker { display: none; }
+.tg-title { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+.tg-count { background: var(--bg); color: var(--muted); font-size: 12px; font-weight: 700; padding: 1px 8px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+.tip-group[open] > summary { border-bottom: 1px solid var(--line); }
+.tip-group[open] .chev { transform: rotate(180deg); }
+.box.tip-group ul.tips { padding: 14px 16px 16px; }
+@media (hover: hover) {
+  .tip-group > summary:hover { background: color-mix(in srgb, var(--bg) 60%, var(--surface)); }
+}
