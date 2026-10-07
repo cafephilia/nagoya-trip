@@ -46,11 +46,9 @@ const ICON: Record<WayMode, string[]> = {
               <span v-if="w.best" class="way-best">추천</span>
             </div>
             <div class="way-label">{{ w.label }}</div>
+            <div v-if="w.cost" class="way-cost">{{ w.cost }}</div>
           </div>
-          <div class="way-stats">
-            <span class="way-time">{{ w.time }}</span>
-            <span v-if="w.cost" class="way-cost">{{ w.cost }}</span>
-          </div>
+          <span class="way-time">{{ w.time }}</span>
         </div>
         <ol v-if="w.steps" class="way-steps">
           <li v-for="s in w.steps" :key="s">{{ s }}</li>
