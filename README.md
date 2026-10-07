@@ -104,3 +104,8 @@ npm run build   # 타입 검사 + dist 빌드
 | 맛집 · 피요린 | Cyukon | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Piyorin.jpg) |
 | 맛집 · 신스즈메 (당고 예시) | Ocdp | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Mitarashi_dango_001.jpg) |
 | 맛집 · 키요메모치 총본가 | Gnsin | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) | [Commons](https://commons.wikimedia.org/wiki/File:Kiyomemochi_Sohonke.JPG) |
+| 맛집 · 마코토야 (미소니코미 예시) | 円周率３パーセント | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Misonikomiudon_20201201-10.jpg) |
+| 맛집 · 모치츠키안 (떡 예시) | Syced | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Mochi_with_kinako_and_sauce.jpg) |
+| 맛집 · 마츠무라 (건물) | JKT-c | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Dai-Nagoya_Building_-_01.JPG) |
+| 맛집 · 포파이 (정식 예시) | 円周率３パーセント | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Roast_katsu_%26_fried_salmon_set_20200522-02.jpg) |
+| 맛집 · 아지사이 (완탕면 예시) | ジョンドウ | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:%E6%9D%A5%E6%9D%A5%E8%BB%92%E3%83%AF%E3%83%B3%E3%82%BF%E3%83%B3%E9%BA%BA.jpg) |
