@@ -11,18 +11,19 @@ const props = defineProps<{ item: Item; state?: 'past' | 'now' }>()
 
 const hasBody = computed(() => {
   const it = props.item
-  return Boolean(it.ways || it.facts || it.menu || it.tip || it.map || it.alt || it.taxi)
+  return Boolean(it.ways || it.facts || it.menu || it.tip || it.map || it.alt || it.taxi || it.picks)
 })
 </script>
 
 <template>
-  <li class="item" :class="[`k-${item.k}`, state]">
+  <li class="item" :class="[`k-${item.k}`, state, { optional: item.optional }]">
     <div class="node"><KindIcon :kind="item.k" /></div>
     <component :is="hasBody ? 'details' : 'div'" class="card">
       <component :is="hasBody ? 'summary' : 'div'" class="head">
         <div class="meta">
           <span class="time">{{ item.t }}</span>
           <span class="kind">{{ KIND_LABEL[item.k] }}</span>
+          <span v-if="item.optional" class="opt-pill">선택</span>
           <span v-if="item.dur" class="dur">{{ item.dur }}</span>
           <span v-if="state === 'now'" class="now-pill">지금</span>
           <svg v-if="hasBody" class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -49,6 +50,23 @@ const hasBody = computed(() => {
             <span class="yen">{{ formatYen(yen) }}</span>
           </li>
         </ul>
+        <ol v-if="item.picks" class="picks">
+          <li v-for="p in item.picks" :key="p.title" class="pick">
+            <div class="pick-kind">{{ p.kind }}</div>
+            <div class="alt-title">{{ p.title }}</div>
+            <div class="ja sub">{{ p.ja }}</div>
+            <div class="note">{{ p.note }}</div>
+            <dl class="facts">
+              <template v-for="[label, value] in p.facts" :key="label">
+                <dt>{{ label }}</dt>
+                <dd>{{ value }}</dd>
+              </template>
+            </dl>
+            <div class="actions">
+              <MapLink :query="p.map" />
+            </div>
+          </li>
+        </ol>
         <div v-if="item.tip" class="tip" :class="{ warn: item.tipWarn }">
           <b v-if="item.tipWarn">중요</b>
           {{ item.tip }}

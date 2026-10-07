@@ -65,6 +65,20 @@ export interface Item {
   taxi?: Place
   alt?: Alt
   ways?: Way[]
+  /** 기분과 체력에 따라 고르는 선택 일정 */
+  optional?: boolean
+  /** 선택 일정에서 고를 수 있는 장소 목록 */
+  picks?: Pick[]
+}
+
+export interface Pick {
+  title: string
+  ja: string
+  /** 한 줄 소개 */
+  kind: string
+  note: string
+  facts: [label: string, value: string][]
+  map: string
 }
 
 export interface Callout {

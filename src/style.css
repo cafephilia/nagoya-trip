@@ -347,3 +347,13 @@ table.tbl td:last-child { text-align: right; font-weight: 700; font-variant-nume
 @media (hover: hover) {
   .tip-group > summary:hover { background: color-mix(in srgb, var(--bg) 60%, var(--surface)); }
 }
+
+/* 선택 일정 */
+.item.optional .card { border-style: dashed; box-shadow: none; }
+.item.optional .node { background: var(--surface); box-shadow: 0 0 0 4px var(--bg), inset 0 0 0 1.5px color-mix(in srgb, var(--kc) 45%, transparent); }
+.opt-pill { border: 1px solid var(--line); color: var(--muted); font-size: 11.5px; font-weight: 700; padding: 0 8px; border-radius: 999px; }
+.picks { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.pick { background: var(--bg); border-radius: var(--r-md); padding: 12px 14px 14px; display: grid; gap: 2px; }
+.pick-kind { font-size: 11.5px; font-weight: 700; color: var(--kc); letter-spacing: .02em; margin-bottom: 2px; }
+.pick .facts { margin-top: 8px; font-size: 13.5px; }
+.pick .actions { margin-top: 10px; }
