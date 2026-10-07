@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { DAYS, FLIGHTS } from './data/trip'
-import type { Place } from './types'
-import { localDate, openTaxiKey, store } from './utils'
+import type { MenuBoard, Place } from './types'
+import { localDate, openMenuKey, openTaxiKey, store } from './utils'
 import DayView from './components/DayView.vue'
 import InfoView from './components/InfoView.vue'
+import MenuSheet from './components/MenuSheet.vue'
 import TaxiCard from './components/TaxiCard.vue'
 
 const TAB_KEY = 'nagoya-tab'
@@ -57,8 +58,15 @@ provide(openTaxiKey, place => {
   taxi.value = place
 })
 
+const menu = ref<MenuBoard | null>(null)
+provide(openMenuKey, board => {
+  menu.value = board
+})
+
 const onKey = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') taxi.value = null
+  if (e.key !== 'Escape') return
+  taxi.value = null
+  menu.value = null
 }
 onMounted(() => {
   document.addEventListener('keydown', onKey)
@@ -119,5 +127,6 @@ onBeforeUnmount(() => {
     </div>
   </nav>
 
+  <MenuSheet v-if="menu" :menu="menu" @close="menu = null" />
   <TaxiCard v-if="taxi" :place="taxi" @close="taxi = null" />
 </template>

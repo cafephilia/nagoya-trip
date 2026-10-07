@@ -21,6 +21,8 @@ export interface Alt {
   ja: string
   note: string
   map: string
+  /** MENUS의 키 */
+  menuId?: string
 }
 
 export type WayMode = 'walk' | 'subway' | 'bus' | 'train' | 'taxi'
@@ -76,6 +78,8 @@ export interface Item {
   alt?: Alt
   ways?: Way[]
   photo?: Photo
+  /** MENUS의 키. 카드에 메뉴판 버튼을 보여준다 */
+  menuId?: string
   /** 기분과 체력에 따라 고르는 선택 일정 */
   optional?: boolean
   /** 선택 일정에서 고를 수 있는 장소 목록 */
@@ -90,6 +94,7 @@ export interface Pick {
   note: string
   facts: [label: string, value: string][]
   map: string
+  menuId?: string
 }
 
 export interface Callout {
@@ -128,4 +133,28 @@ export interface CheckItem {
   id: string
   title: string
   detail: string
+}
+
+export interface MenuItem {
+  ko: string
+  ja: string
+  /** 숫자 문자열(예: '1,265', '660–880') 또는 '미확인' */
+  yen: string
+  desc?: string
+  tag?: '추천' | '매움' | '인기' | '한정'
+}
+
+export interface MenuSection {
+  name: string
+  items: MenuItem[]
+}
+
+export interface MenuBoard {
+  title: string
+  ja: string
+  /** 가격 기준 등 한 줄 안내 */
+  note?: string
+  sections: MenuSection[]
+  tips?: string[]
+  sources?: string[]
 }

@@ -371,3 +371,47 @@ table.tbl td:last-child { text-align: right; font-weight: 700; font-variant-nume
 }
 .credit { margin: 0; font-size: 12px; color: var(--muted); }
 .credit a { color: inherit; }
+
+/* 메뉴판 */
+.sheet-backdrop {
+  position: fixed; inset: 0; z-index: 30; background: rgba(8, 12, 11, .5);
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.sheet {
+  width: 100%; max-width: 560px; max-height: 88vh; display: flex; flex-direction: column;
+  background: var(--surface); color: var(--ink);
+  border-radius: 22px 22px 0 0; box-shadow: 0 -8px 30px rgba(0, 0, 0, .18);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (min-width: 600px) {
+  .sheet-backdrop { align-items: center; padding: 24px; }
+  .sheet { border-radius: 22px; max-height: 85vh; }
+}
+.sheet-head {
+  display: flex; align-items: flex-start; gap: 12px; padding: 18px 18px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.sheet-titles { flex: 1; min-width: 0; }
+.sheet-eyebrow { font-size: 12px; font-weight: 700; color: var(--k-food); }
+.sheet-head h2 { margin: 2px 0 0; font-size: 20px; font-weight: 800; letter-spacing: -0.03em; }
+.sheet-close {
+  flex: none; width: 36px; height: 36px; border-radius: 50%; border: 0; cursor: pointer;
+  background: var(--bg); color: var(--ink); display: grid; place-items: center;
+}
+.sheet-close svg { width: 18px; height: 18px; }
+.sheet-body { overflow-y: auto; overscroll-behavior: contain; padding: 14px 18px 20px; display: grid; gap: 20px; }
+.sheet-tips { margin: 0; padding: 12px 14px 12px 30px; background: var(--gold-soft); border-radius: var(--r-md); display: grid; gap: 6px; font-size: 13.5px; line-height: 1.55; }
+.menu-sec h3 { margin: 0 0 4px; font-size: 13px; font-weight: 700; color: var(--muted); letter-spacing: .02em; }
+.menu-items { list-style: none; margin: 0; padding: 0; }
+.menu-items li { padding: 11px 0; border-bottom: 1px solid var(--line); }
+.menu-items li:last-child { border-bottom: 0; }
+.mi-row { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.mi-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+.mi-tag { display: inline-block; margin-left: 4px; vertical-align: 2px; font-size: 10.5px; font-weight: 700; padding: 0 6px; border-radius: 999px; background: var(--gold-soft); color: var(--gold-ink); }
+.mi-tag.hot { background: var(--warn-soft); color: var(--warn); }
+.mi-yen { flex: none; font-size: 14.5px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.mi-ja { font-size: 12px; color: var(--muted); }
+.mi-desc { margin: 4px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--muted); }
+.sheet-foot { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+.sheet-foot p { margin: 0; }
+.sheet-foot a { color: inherit; }

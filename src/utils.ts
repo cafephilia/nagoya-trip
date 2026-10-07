@@ -1,5 +1,5 @@
 import type { InjectionKey } from 'vue'
-import type { Place } from './types'
+import type { MenuBoard, Place } from './types'
 
 export const mapUrl = (q: string) =>
   'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(q)
@@ -35,3 +35,5 @@ export const store = {
 }
 
 export const openTaxiKey: InjectionKey<(place: Place) => void> = Symbol('openTaxi')
+
+export const openMenuKey: InjectionKey<(menu: MenuBoard) => void> = Symbol('openMenu')

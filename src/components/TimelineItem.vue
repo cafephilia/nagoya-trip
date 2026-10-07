@@ -4,6 +4,7 @@ import { KIND_LABEL, type Item } from '../types'
 import { formatYen } from '../utils'
 import KindIcon from './KindIcon.vue'
 import MapLink from './MapLink.vue'
+import MenuButton from './MenuButton.vue'
 import TaxiButton from './TaxiButton.vue'
 import WayList from './WayList.vue'
 
@@ -11,7 +12,7 @@ const props = defineProps<{ item: Item; state?: 'past' | 'now' }>()
 
 const hasBody = computed(() => {
   const it = props.item
-  return Boolean(it.ways || it.facts || it.menu || it.tip || it.map || it.alt || it.taxi || it.picks)
+  return Boolean(it.ways || it.facts || it.menu || it.tip || it.map || it.alt || it.taxi || it.picks || it.menuId)
 })
 </script>
 
@@ -67,6 +68,7 @@ const hasBody = computed(() => {
               </template>
             </dl>
             <div class="actions">
+              <MenuButton v-if="p.menuId" :id="p.menuId" />
               <MapLink :query="p.map" />
             </div>
           </li>
@@ -75,7 +77,8 @@ const hasBody = computed(() => {
           <b v-if="item.tipWarn">중요</b>
           {{ item.tip }}
         </div>
-        <div v-if="item.map || item.taxi" class="actions">
+        <div v-if="item.map || item.taxi || item.menuId" class="actions">
+          <MenuButton v-if="item.menuId" :id="item.menuId" />
           <MapLink v-if="item.map" :query="item.map" solid />
           <TaxiButton v-if="item.taxi" :place="item.taxi" />
         </div>
@@ -85,6 +88,7 @@ const hasBody = computed(() => {
           <div class="ja sub">{{ item.alt.ja }}</div>
           <div class="note">{{ item.alt.note }}</div>
           <div class="actions">
+            <MenuButton v-if="item.alt.menuId" :id="item.alt.menuId" />
             <MapLink :query="item.alt.map" />
           </div>
         </div>
