@@ -70,7 +70,7 @@ npm run build   # 타입 검사 + dist 빌드
 
 ## 사진 출처
 
-관광지·식당 카드 사진은 위키미디어 커먼즈의 자유 라이선스 사진을 960px로 줄여 `public/photos`에 넣었습니다.
+관광지·식당·맛집 카드 사진은 위키미디어 커먼즈의 자유 라이선스 사진을 960px로 줄여 `public/photos`에 넣었습니다.
 
 | 장소 | 작가 | 라이선스 | 원본 |
 |---|---|---|---|
@@ -91,3 +91,15 @@ npm run build   # 타입 검사 + dist 빌드
 | 야마모토야 소혼케 (미소니코미 우동) | Asturio Cantabrio | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Yamamotoya_Sohonke_Misonikomi_Udon_2020-11_ac.jpg) |
 | 야바톤 (미소카츠) | Akahito Yamabe | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Yabaton%27s_misokatsu_%EF%BC%88Nagoya_soul_food%EF%BC%89.jpg) |
 | 마루하 식당 | Kanesue | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:%E3%81%BE%E3%82%8B%E3%81%AF%E9%A3%9F%E5%A0%82_-_13993916259.jpg) |
+| 맛집 · 미센 | Kanesue | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Misen_Taiwan_Ramen_20180929.jpg) |
+| 맛집 · 노라덴 (미소오뎅 예시) | jetalone | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Miso_oden_by_jetalone_in_Mount_Takao,_Hachioji.jpg) |
+| 맛집 · 오카후지 (히쓰마부시 예시) | akira yamada | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:%E3%81%B2%E3%81%A4%E3%81%BE%E3%81%B6%E3%81%97_(8866834170).jpg) |
+| 맛집 · 요코이 | Asturio Cantabrio | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Ankake_Spaghetti_Yokoi_2021-08_ac.jpg) |
+| 맛집 · 센쥬 | 円周率３パーセント | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Tenmusu_Senju_Kita_20161107.jpg) |
+| 맛집 · 멘야 하나비 | LR0725 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Mazesoba_of_Menya_Hanabi.jpg) |
+| 맛집 · 콘파루 | Lombroso | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) | [Commons](https://commons.wikimedia.org/wiki/File:Fried_prawn_sandwich,_at_Konparu_(2013.06.22).jpg) |
+| 맛집 · 하브스 | bryan... | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:HARBS,_Nagoya,_Aichi,_Japan,_%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%89%E3%83%9E%E3%83%AD%E3%83%B3%E3%82%B1%E3%83%BC%E3%82%AD,_%E3%83%9E%E3%83%AD%E3%83%B3%E3%82%BF%E3%83%AB%E3%83%88,_%E3%83%9F%E3%83%AB%E3%82%AF%E3%83%AC%E3%83%BC%E3%83%97,_%E3%83%8F%E3%83%BC%E3%83%96%E3%82%B9,_%E6%A0%84%E6%9C%AC%E5%BA%97_(15869571285).jpg) |
+| 맛집 · 킷사 마운틴 | Hiroaki Sakuma | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kissa_Mountain%27s_Meat_Spa_in_Nagoya_2011.jpg) |
+| 맛집 · 피요린 | Cyukon | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Piyorin.jpg) |
+| 맛집 · 신스즈메 (당고 예시) | Ocdp | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Mitarashi_dango_001.jpg) |
+| 맛집 · 키요메모치 총본가 | Gnsin | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) | [Commons](https://commons.wikimedia.org/wiki/File:Kiyomemochi_Sohonke.JPG) |

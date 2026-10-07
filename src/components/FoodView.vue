@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { FOOD_SPOTS } from '../data/foodspots'
+import { SPOT_PHOTOS } from '../data/photos'
 import { formatYen } from '../utils'
 import MapLink from './MapLink.vue'
 
@@ -38,6 +39,12 @@ const spots = computed(() =>
     <li v-for="s in spots" :key="s.id">
       <details class="card spot">
         <summary class="head">
+          <figure v-if="SPOT_PHOTOS[s.id]" class="photo">
+            <img :src="SPOT_PHOTOS[s.id].src" :alt="s.name" loading="lazy" decoding="async">
+            <figcaption>
+              <template v-if="SPOT_PHOTOS[s.id].example">예시 사진 · </template>{{ SPOT_PHOTOS[s.id].author }} · {{ SPOT_PHOTOS[s.id].license }}
+            </figcaption>
+          </figure>
           <div class="meta">
             <span class="kind">{{ s.genre }}</span>
             <span class="dur">{{ s.area }}</span>
@@ -68,6 +75,12 @@ const spots = computed(() =>
           <div class="actions">
             <MapLink :query="s.map" solid />
           </div>
+          <p v-if="SPOT_PHOTOS[s.id]" class="credit">
+            사진: <a :href="SPOT_PHOTOS[s.id].source" target="_blank" rel="noopener">{{ SPOT_PHOTOS[s.id].author }}</a>,
+            <a :href="SPOT_PHOTOS[s.id].licenseUrl" target="_blank" rel="noopener">{{ SPOT_PHOTOS[s.id].license }}</a>,
+            위키미디어 커먼즈 (크기 조정)
+            <template v-if="SPOT_PHOTOS[s.id].example"><br>{{ SPOT_PHOTOS[s.id].example }}.</template>
+          </p>
           <p class="credit">
             출처:
             <template v-for="(src, i) in s.sources" :key="src">
