@@ -20,7 +20,7 @@
 ## 기능
 
 - **날짜별 타임라인**: 일정 종류별 아이콘, 여행 당일에는 지금 할 일 표시
-- **장소 상세**: 영업시간, 휴무일, 메뉴와 가격, 대안 장소, 구글 지도 링크
+- **장소 상세**: 관광지 사진, 영업시간, 휴무일, 메뉴와 가격, 대안 장소, 구글 지도 링크
 - **이동 방법 비교**: 도보·지하철·전철·버스·택시별 경로, 승강장·출구, 소요 시간, 요금
 - **택시용 주소 카드**: 기사에게 보여줄 일본어 목적지를 크게 표시
 - **정보 탭**: 항공권, 수하물 규정, 숙소, 출발 전 체크리스트, 처음 일본 여행 팁(접어서 표시), 교통 요금, 걸어서 가는 거리, 행사, 긴급 연락처
@@ -60,3 +60,21 @@ npm run build   # 타입 검사 + dist 빌드
 - 정보 확인일은 2026-10-07입니다. 영업시간과 가격은 바뀔 수 있습니다.
 - 지하철 시각과 운임은 Yahoo!路線情報(2026년 9–10월판), 도보 시간은 구글 지도 기준입니다.
 - 택시 요금은 2025년 10월 개정 나고야 운임으로 계산한 추정치입니다.
+
+## 사진 출처
+
+관광지 카드 사진은 위키미디어 커먼즈의 자유 라이선스 사진을 960px로 줄여 `public/photos`에 넣었습니다.
+
+| 장소 | 작가 | 라이선스 | 원본 |
+|---|---|---|---|
+| 미라이타워 | Brücke-Osteuropa | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Nagoya_TV_Tower_4.JPG) |
+| 오아시스21 | Emran Kassim | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:Nagoya_TV_Tower_%26_Oasis_21_(3279104534).jpg) |
+| 나고야성 | Tomio344456 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Main_Tower_Keep_in_Meijo_Park,_Hommaru_Naka_Ward_Nagoya_2021.jpg) |
+| 긴샤치요코초 | Bariston | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Kinshachi_Yokocho.jpg) |
+| 아쓰타 신궁 | Bariston | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Atsuta_Shrine.jpg) |
+| 오스 상점가 | Bariston | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Osu1.JPG) |
+| 오스 칸논 | Asturio Cantabrio | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Osu_Kannon_main_hall_2025-02_ac_(1).jpg) |
+| 히루가노 고원 휴게소 | KAMUI | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) | [Commons](https://commons.wikimedia.org/wiki/File:Hirugano-kogen-SA.jpg) |
+| 시라카와고 | DimiTalen | [CC0](http://creativecommons.org/publicdomain/zero/1.0/deed.en) | [Commons](https://commons.wikimedia.org/wiki/File:Overview_of_Ogimachi,_Shirakawa,_from_the_Ogimachi_Castle_observation_point.jpg) |
+| 가을 다카야마 마쓰리 | Sjaak Kempe | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) | [Commons](https://commons.wikimedia.org/wiki/File:20131010_22_Takayama_-_Autumn_festival_(10491439093).jpg) |
+| 구조하치만 | Asturio Cantabrio | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) | [Commons](https://commons.wikimedia.org/wiki/File:Gujo-Hachiman_Yoshida_River_2019-08_ac.jpg) |

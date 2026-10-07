@@ -48,6 +48,16 @@ export interface Way {
   best?: boolean
 }
 
+/** 위키미디어 커먼즈 등 자유 라이선스 사진 */
+export interface Photo {
+  src: string
+  author: string
+  license: string
+  licenseUrl: string
+  /** 원본 파일 페이지 */
+  source: string
+}
+
 export interface Item {
   /** 일본 시각 HH:MM */
   t: string
@@ -65,6 +75,7 @@ export interface Item {
   taxi?: Place
   alt?: Alt
   ways?: Way[]
+  photo?: Photo
   /** 기분과 체력에 따라 고르는 선택 일정 */
   optional?: boolean
   /** 선택 일정에서 고를 수 있는 장소 목록 */

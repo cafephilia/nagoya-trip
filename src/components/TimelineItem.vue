@@ -20,6 +20,10 @@ const hasBody = computed(() => {
     <div class="node"><KindIcon :kind="item.k" /></div>
     <component :is="hasBody ? 'details' : 'div'" class="card">
       <component :is="hasBody ? 'summary' : 'div'" class="head">
+        <figure v-if="item.photo" class="photo">
+          <img :src="item.photo.src" :alt="item.title" loading="lazy" decoding="async">
+          <figcaption>{{ item.photo.author }} · {{ item.photo.license }}</figcaption>
+        </figure>
         <div class="meta">
           <span class="time">{{ item.t }}</span>
           <span class="kind">{{ KIND_LABEL[item.k] }}</span>
@@ -84,6 +88,11 @@ const hasBody = computed(() => {
             <MapLink :query="item.alt.map" />
           </div>
         </div>
+        <p v-if="item.photo" class="credit">
+          사진: <a :href="item.photo.source" target="_blank" rel="noopener">{{ item.photo.author }}</a>,
+          <a :href="item.photo.licenseUrl" target="_blank" rel="noopener">{{ item.photo.license }}</a>,
+          위키미디어 커먼즈 (크기 조정)
+        </p>
       </div>
     </component>
   </li>
