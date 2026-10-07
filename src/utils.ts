@@ -14,7 +14,11 @@ export const toMinutes = (t: string) => {
   return h * 60 + m
 }
 
-export const formatYen = (y: string) => (/\d/.test(y) ? '¥' + y : y)
+/** '1,265' → '¥1,265', '+200'(음료값에 추가) → '+¥200', '미확인'은 그대로 */
+export const formatYen = (y: string) => {
+  if (!/\d/.test(y)) return y
+  return y.startsWith('+') ? '+¥' + y.slice(1) : '¥' + y
+}
 
 /** 사파리 비공개 모드 등에서 localStorage 접근이 실패해도 앱은 동작해야 한다 */
 export const store = {

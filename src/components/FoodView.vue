@@ -5,6 +5,7 @@ import { SPOT_PHOTOS } from '../data/photos'
 import { formatYen } from '../utils'
 import Badges from './Badges.vue'
 import MapLink from './MapLink.vue'
+import MenuButton from './MenuButton.vue'
 
 const ALL = '전체'
 const genre = ref(ALL)
@@ -75,6 +76,7 @@ const spots = computed(() =>
           </dl>
           <div class="tip">{{ s.tips }}</div>
           <div class="actions">
+            <MenuButton :id="s.id" />
             <MapLink :query="s.map" solid />
           </div>
           <p v-if="SPOT_PHOTOS[s.id]" class="credit">
