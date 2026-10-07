@@ -91,7 +91,13 @@ export interface Item {
   optional?: boolean
   /** 선택 일정에서 고를 수 있는 장소 목록 */
   picks?: Pick[]
+  /** 카드에 수하물 규정 버튼을 보여준다 (공항 체크인·보안검색) */
+  baggage?: boolean
+  /** 동선 지도에 찍을 위치 [위도, 경도]. 없으면 지도에서 빠진다 */
+  pos?: LatLng
 }
+
+export type LatLng = [lat: number, lng: number]
 
 export interface Pick {
   title: string
@@ -141,6 +147,12 @@ export interface CheckItem {
   id: string
   title: string
   detail: string
+}
+
+/** 짐 챙기기 목록의 한 묶음 */
+export interface PackGroup {
+  title: string
+  items: CheckItem[]
 }
 
 export interface MenuItem {

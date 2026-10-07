@@ -1,18 +1,21 @@
 <script setup lang="ts">
-import { computed, reactive, watch } from 'vue'
+import { computed, inject, reactive, watch } from 'vue'
 import { CHECKLIST, FIRST_TRIP_TIPS, FLIGHTS, HOTEL, USEFUL_APPS } from '../data/trip'
-import { store } from '../utils'
+import { packDone, packTotal } from '../packing'
+import { checkKey, openBaggageKey, openPackKey, store } from '../utils'
 import MapLink from './MapLink.vue'
 import TaxiButton from './TaxiButton.vue'
 import TipGroups from './TipGroups.vue'
 
 const checked = reactive<Record<string, boolean>>(
-  Object.fromEntries(CHECKLIST.map(c => [c.id, store.get('nagoya-ck-' + c.id) === '1'])),
+  Object.fromEntries(CHECKLIST.map(c => [c.id, store.get(checkKey(c.id)) === '1'])),
 )
 watch(checked, v => {
-  for (const [id, on] of Object.entries(v)) store.set('nagoya-ck-' + id, on ? '1' : '0')
+  for (const [id, on] of Object.entries(v)) store.set(checkKey(id), on ? '1' : '0')
 })
 const doneCount = computed(() => CHECKLIST.filter(c => checked[c.id]).length)
+const openPack = inject(openPackKey, () => {})
+const openBaggage = inject(openBaggageKey, () => {})
 
 const fares: [string, string][] = [
   ['μSKY 공항 ↔ 메이테쓰 나고야 (29분)', '¥1,430'],
@@ -108,6 +111,9 @@ const contacts: [string, string][] = [
         <li>좌석 지정 무료 (Fast 구역 제외)</li>
         <li>변경 수수료 없음 (출발 1시간 전까지, 운임 차액은 부담)</li>
       </ul>
+      <div class="actions top-gap">
+        <button class="btn solid" type="button" @click="openBaggage()">보안검색 전 수하물 규정 보기</button>
+      </div>
     </div>
   </div>
 
@@ -130,7 +136,7 @@ const contacts: [string, string][] = [
   </div>
 
   <div class="sec">
-    <h3>출발 전 체크리스트<span class="prog">{{ doneCount }}/{{ CHECKLIST.length }}</span></h3>
+    <h3>출발 전 할 일<span class="prog">{{ doneCount }}/{{ CHECKLIST.length }}</span></h3>
     <div class="box">
       <ul class="check">
         <li v-for="c in CHECKLIST" :key="c.id">
@@ -141,6 +147,9 @@ const contacts: [string, string][] = [
         </li>
       </ul>
     </div>
+    <button class="btn pack-open" type="button" @click="openPack()">
+      짐 챙길 것 목록 열기 <span class="prog">{{ packDone }}/{{ packTotal }}</span>
+    </button>
   </div>
 
   <div class="sec">

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, inject } from 'vue'
 import { KIND_LABEL, type Item } from '../types'
-import { formatYen } from '../utils'
+import { formatYen, openBaggageKey } from '../utils'
 import KindIcon from './KindIcon.vue'
 import MapLink from './MapLink.vue'
 import MenuButton from './MenuButton.vue'
@@ -13,8 +13,10 @@ const props = defineProps<{ item: Item; state?: 'past' | 'now' }>()
 
 const hasBody = computed(() => {
   const it = props.item
-  return Boolean(it.ways || it.facts || it.menu || it.tip || it.map || it.alt || it.taxi || it.picks || it.menuId)
+  return Boolean(it.ways || it.facts || it.menu || it.tip || it.map || it.alt || it.taxi || it.picks || it.menuId || it.baggage)
 })
+
+const openBaggage = inject(openBaggageKey, () => {})
 </script>
 
 <template>
@@ -79,7 +81,13 @@ const hasBody = computed(() => {
           <b v-if="item.tipWarn">중요</b>
           {{ item.tip }}
         </div>
-        <div v-if="item.map || item.taxi || item.menuId" class="actions">
+        <div v-if="item.map || item.taxi || item.menuId || item.baggage" class="actions">
+          <button v-if="item.baggage" class="btn" type="button" @click="openBaggage()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="10" height="9" rx="1.8" /><path d="M6 5V3.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V5" />
+            </svg>
+            수하물 규정
+          </button>
           <MenuButton v-if="item.menuId" :id="item.menuId" />
           <MapLink v-if="item.map" :query="item.map" solid />
           <TaxiButton v-if="item.taxi" :place="item.taxi" />

@@ -1,4 +1,4 @@
-import type { CheckItem, Day, Flight, Item, Pick, Place, TipGroup } from '../types'
+import type { CheckItem, Day, Flight, Item, LatLng, PackGroup, Pick, Place, TipGroup } from '../types'
 import { PHOTOS, SPOT_PHOTOS } from './photos'
 
 // 정보 확인일 2026-10-07
@@ -10,6 +10,27 @@ export const HOTEL: Place = {
   addr: '名古屋市中区錦3-8-21',
   tel: '052-855-2085',
 }
+
+// 동선 지도용 좌표 [위도, 경도]. 주소는 국토지리원 주소 검색, 명소는 OpenStreetMap 기준
+const POS = {
+  centrair: [34.85994, 136.81618],
+  hotel: [35.17168, 136.90511],
+  okafuji: [35.16710, 136.89739],
+  mirai: [35.17230, 136.90833],
+  oasis: [35.17109, 136.90964],
+  hirugano: [35.98743, 136.90900],
+  shirakawago: [36.25735, 136.90683],
+  takayama: [36.14169, 137.25951],
+  gujo: [35.74986, 136.95937],
+  gomitori: [35.16723, 136.90457],
+  castle: [35.18498, 136.89970],
+  kinshachi: [35.18294, 136.89919],
+  atsuta: [35.12543, 136.90925],
+  osu: [35.15912, 136.90467],
+  osuKannon: [35.15967, 136.89931],
+  yabaton: [35.16163, 136.90625],
+  donki: [35.17010, 136.90657],
+} satisfies Record<string, LatLng>
 
 export const FLIGHTS: Flight[] = [
   {
@@ -144,7 +165,7 @@ export const DAYS: Day[] = [
         map: '김포국제공항 국제선',
       },
       {
-        t: '08:50', k: 'flight', title: '김포공항 국제선 도착 · Peach 체크인',
+        t: '08:50', k: 'flight', title: '김포공항 국제선 도착 · Peach 체크인', baggage: true,
         note: '체크인 08:50 시작, 10:30 마감. 일찍 도착하면 카운터 앞에서 기다렸다가 짐을 맡기고 바로 보안검색으로 가서 라운지 시간을 넉넉히 확보해요.',
         facts: [
           ['장소', '김포공항 국제선 청사 출발층. Peach 카운터 번호는 공항 안내판 확인'],
@@ -154,7 +175,7 @@ export const DAYS: Day[] = [
         map: '김포국제공항 국제선',
       },
       {
-        t: '09:20', k: 'flight', title: '보안검색 · 출국심사', dur: '20m',
+        t: '09:20', k: 'flight', title: '보안검색 · 출국심사', baggage: true, dur: '20m',
         note: '김포는 인천보다 줄이 짧은 편이지만, 연휴 앞이라 여유 있게 들어가세요.',
       },
       {
@@ -175,14 +196,14 @@ export const DAYS: Day[] = [
         note: '13:10 도착 · 비행 약 1시간 50분 · 탑승구 10:50 마감', dur: '1h 50m',
       },
       {
-        t: '13:10', k: 'move', title: '센트레아 제1터미널 도착 · 입국', ja: '中部国際空港 第1ターミナル',
+        t: '13:10', pos: POS.centrair, k: 'move', title: '센트레아 제1터미널 도착 · 입국', ja: '中部国際空港 第1ターミナル',
         note: '15:40 리무진을 타니 서두르지 않아도 돼요. Visit Japan Web QR을 미리 띄워 두세요.',
         facts: [['도착층', 'T1 2층'], ['입국', 'Visit Japan Web QR 제시'], ['버스', 'T1 6번 승강장 센트레아 리무진']],
         tip: '입국이 13:30 전에 끝나면 13:40 리무진(사카에 14:35 도착)을 타도 돼요.',
         map: '中部国際空港 第1ターミナル',
       },
       {
-        t: '14:00', k: 'stay', title: '공항에서 쉬기 · 가벼운 간식', ja: 'セントレア スカイタウン',
+        t: '14:00', pos: POS.centrair, k: 'stay', title: '공항에서 쉬기 · 가벼운 간식', ja: 'セントレア スカイタウン',
         note: '버스까지 1시간 반 정도 남아요. 저녁이 17:30이니 4층 스카이타운에서 가볍게만 먹고, 리무진 승차권을 미리 사 두세요.', dur: '1.5h',
         facts: [
           ['승차권', 'T1 2층 도착 로비 센트럴재팬 트래블센터(9:00–19:00) 또는 액세스플라자 1층 무인 발매기'],
@@ -192,7 +213,7 @@ export const DAYS: Day[] = [
         map: 'セントレア スカイタウン',
       },
       {
-        t: '15:40', k: 'move', title: '센트레아 리무진 버스 → 사카에', ja: 'セントレアリムジン',
+        t: '15:40', pos: POS.centrair, k: 'move', title: '센트레아 리무진 버스 → 사카에', ja: 'セントレアリムジン',
         note: '갈아타지 않고 사카에까지 바로 가요. 약 55분, 1인 2,000엔. 만석이면 μSKY로 가요.', dur: '55m',
         ways: [
           {
@@ -225,13 +246,13 @@ export const DAYS: Day[] = [
         ],
       },
       {
-        t: '16:45', k: 'stay', title: '호텔 체크인 · 잠깐 휴식', ja: HOTEL.ja, taxi: HOTEL,
+        t: '16:45', pos: POS.hotel, k: 'stay', title: '호텔 체크인 · 잠깐 휴식', ja: HOTEL.ja, taxi: HOTEL,
         note: '짐을 풀고 잠깐 쉬었다가 17:10쯤 저녁 먹으러 나가요.',
         facts: [['주소', HOTEL.addr], ['역', '사카에역 1번 출구 · 히사야오도리역 4번 출구 각 도보 3분'], ['체크아웃', '11:00']],
         map: 'ホテルマイステイズ名古屋錦 名古屋市中区錦3-8-21',
       },
       {
-        t: '17:30', k: 'food', title: '저녁 · 히쓰마부시 우나우 오카후지', photo: SPOT_PHOTOS.okafuji, ja: '鰻う おか冨士', menuId: 'okafuji', badges: ['예약 추천'],
+        t: '17:30', pos: POS.okafuji, k: 'food', title: '저녁 · 히쓰마부시 우나우 오카후지', photo: SPOT_PHOTOS.okafuji, ja: '鰻う おか冨士', menuId: 'okafuji', badges: ['예약 추천'],
         note: '나고야 명점 「숯불구이 우나후지」의 첫 공식 분점. 장어 百名店 2024·2026, 미쉐린 빕 구르망. 숯불에 구워 겉은 바삭하고 속은 부드러운 히쓰마부시로 나고야 첫 저녁을 시작해요.',
         ways: [
           {
@@ -295,7 +316,7 @@ export const DAYS: Day[] = [
         },
       },
       {
-        t: '19:00', k: 'sight', title: '미라이타워 전망대 야경', photo: PHOTOS.mirai, ja: '中部電力 MIRAI TOWER',
+        t: '19:00', pos: POS.mirai, k: 'sight', title: '미라이타워 전망대 야경', photo: PHOTOS.mirai, ja: '中部電力 MIRAI TOWER',
         note: '해가 진 뒤라 불 켜진 나고야 시내가 한눈에 보여요. 후시미역에서 사카에역으로 돌아와 히사야오도리 공원까지 걸어요.', dur: '40m',
         ways: [
           {
@@ -312,7 +333,7 @@ export const DAYS: Day[] = [
         map: '中部電力 MIRAI TOWER',
       },
       {
-        t: '19:45', k: 'sight', title: '오아시스21 「물의 우주선」 야경', photo: PHOTOS.oasis, ja: 'オアシス21',
+        t: '19:45', pos: POS.oasis, k: 'sight', title: '오아시스21 「물의 우주선」 야경', photo: PHOTOS.oasis, ja: 'オアシス21',
         note: '미라이타워에서 길 건너 바로. 조명이 들어온 유리 지붕 위를 한 바퀴 걸어요. 무료.', dur: '30m',
         ways: [{ mode: 'walk', label: '미라이타워 → 오아시스21 190m', time: '3분', best: true }],
         facts: [['영업', '옥상 10:00–21:00 · 무료'], ['참고', '사카에역 지하와 연결돼 있어요']],
@@ -341,7 +362,7 @@ export const DAYS: Day[] = [
         },
       },
       {
-        t: '07:45', k: 'move', title: '걸어서 미라이타워 아래 집합',
+        t: '07:45', pos: POS.mirai, k: 'move', title: '걸어서 미라이타워 아래 집합',
         note: '출발 10분 전까지 미라이타워 아래에서 「TOURSTORY」 깃발을 찾으세요.', dur: '6m',
         ways: [{ mode: 'walk', label: '호텔 → 미라이타워 400m', time: '6분', best: true, steps: ['호텔에서 동쪽 후쿠로마치도리(袋町通)로 나와 히사야오도리 공원 쪽으로', '탑 아래에서 TOURSTORY 깃발 찾기'] }],
         map: '中部電力 MIRAI TOWER',
@@ -359,13 +380,13 @@ export const DAYS: Day[] = [
         tip: '시골 가게는 현금만 받는 곳이 많아요. 엔화를 넉넉히 챙기고, 긴팔과 가벼운 겉옷(플리스·패딩), 우산을 가져가세요.',
       },
       {
-        t: '09:30', k: 'sight', title: '히루가노 고원 휴게소', photo: PHOTOS.hirugano, ja: 'ひるがの高原SA',
+        t: '09:30', pos: POS.hirugano, k: 'sight', title: '히루가노 고원 휴게소', photo: PHOTOS.hirugano, ja: 'ひるがの高原SA',
         note: '시라카와고까지 가는 마지막 휴식. 화장실은 꼭 여기서 다녀오세요.', dur: '20m',
         tip: '투어 후기에서 휴게소 우유 아이스크림을 많이 추천해요. 줄이 길면 우유나 요구르트만 사도 좋아요.',
         map: 'ひるがの高原SA',
       },
       {
-        t: '10:50', k: 'sight', title: '시라카와고 합장촌', photo: PHOTOS.shirakawago, ja: '白川郷 荻町合掌造り集落',
+        t: '10:50', pos: POS.shirakawago, k: 'sight', title: '시라카와고 합장촌', photo: PHOTOS.shirakawago, ja: '白川郷 荻町合掌造り集落',
         note: '세계유산 합장(갓쇼)가옥 마을. 2시간 30분 머물면서 전망대, 가옥, 점심, 푸딩까지 둘러봐요.', dur: '2.5h',
         ways: [
           {
@@ -407,7 +428,7 @@ export const DAYS: Day[] = [
         map: '白川郷 せせらぎ公園駐車場',
       },
       {
-        t: '12:30', k: 'food', title: '점심 · 시라카와고 하쿠스이엔', photo: PHOTOS.hobamiso, ja: '白水園', menuId: 'hakusuien',
+        t: '12:30', pos: POS.shirakawago, k: 'food', title: '점심 · 시라카와고 하쿠스이엔', photo: PHOTOS.hobamiso, ja: '白水園', menuId: 'hakusuien',
         note: '47년 된 합장가옥 향토요리점. 100석이라 붐비는 점심에도 자리가 나는 편이에요. 버스터미널에서 도보 약 2분.',
         facts: [
           ['주소', '岐阜県大野郡白川村荻町354'],
@@ -425,7 +446,7 @@ export const DAYS: Day[] = [
         },
       },
       {
-        t: '14:20', k: 'sight', title: '다카야마 옛 거리 · 가을 다카야마 마쓰리', photo: PHOTOS.takayama, menuId: 'takayama', ja: '飛騨高山 さんまち通り・秋の高山祭',
+        t: '14:20', pos: POS.takayama, k: 'sight', title: '다카야마 옛 거리 · 가을 다카야마 마쓰리', photo: PHOTOS.takayama, menuId: 'takayama', ja: '飛騨高山 さんまち通り・秋の高山祭',
         note: '에도 시대 거리 산마치를 1시간 동안 걸어요. 마침 가을 다카야마 마쓰리(유네스코 무형유산) 첫날이라 축제 수레와 행렬을 볼 수 있어요.', dur: '1h',
         facts: [
           ['축제', '수레 전시 9:00–17:00 (사쿠라야마하치만구) · 행렬 13:20–15:30 · 인형극 14:00–14:20'],
@@ -469,7 +490,7 @@ export const DAYS: Day[] = [
         map: '高山 さんまち通り',
       },
       {
-        t: '16:40', k: 'sight', title: '물의 마을 구조하치만', photo: PHOTOS.gujo, ja: '郡上八幡',
+        t: '16:40', pos: POS.gujo, k: 'sight', title: '물의 마을 구조하치만', photo: PHOTOS.gujo, ja: '郡上八幡',
         note: '맑은 수로가 마을을 흐르는 작은 성하마을. 투어 후기에서 가장 좋았다는 곳으로 많이 꼽혀요.', dur: '40m',
         facts: [
           ['주의', '가게와 기념관이 17:00에 닫아요. 쇼핑은 도착하자마자 먼저'],
@@ -501,13 +522,13 @@ export const DAYS: Day[] = [
         map: '郡上八幡旧庁舎記念館',
       },
       {
-        t: '18:30', k: 'move', title: '미라이타워 아래 도착 · 해산',
+        t: '18:30', pos: POS.mirai, k: 'move', title: '미라이타워 아래 도착 · 해산',
         note: '교통 상황에 따라 늦어질 수 있어요. 연휴 전날이라 후기에서는 20시 넘어 도착한 날도 있었어요.',
         ways: [{ mode: 'walk', label: '미라이타워 → 호텔 400m', time: '6분' }],
         taxi: HOTEL,
       },
       {
-        t: '19:00', k: 'food', title: '저녁 · 나고야 이자카야 고미토리 본점', badges: ['예약 추천'], photo: PHOTOS.tebasaki, ja: '名古屋めし居酒屋 伍味酉 本店', menuId: 'gomitori',
+        t: '19:00', pos: POS.gomitori, k: 'food', title: '저녁 · 나고야 이자카야 고미토리 본점', badges: ['예약 추천'], photo: PHOTOS.tebasaki, ja: '名古屋めし居酒屋 伍味酉 本店', menuId: 'gomitori',
         note: '1956년 창업한 나고야 음식 이자카야. 데바사키, 도테미소 꼬치, 히쓰마부시까지 나고야 음식을 한 번에 맛봐요. 새벽까지 열어 투어가 늦어져도 괜찮아요.',
         ways: [{ mode: 'walk', label: '미라이타워 → 가게', time: '약 10분', best: true, note: '사카에역 8번 출구에서 도보 3분, 지하 1층. 도보 시간은 주소로 계산한 추정치예요.' }],
         facts: [
@@ -538,7 +559,7 @@ export const DAYS: Day[] = [
     },
     items: [
       {
-        t: '09:00', k: 'move', title: '호텔 → 나고야성 동문', ja: '名古屋城 東門',
+        t: '09:00', pos: POS.hotel, k: 'move', title: '호텔 → 나고야성 동문', ja: '名古屋城 東門',
         note: '히사야오도리역에서 메이조선 1정거장. 동문으로 들어가 정문으로 나오면 긴샤치요코초와 이어져요.', dur: '15m',
         taxi: { ja: '名古屋城 東門', addr: '名古屋市中区本丸1-1' },
         ways: [
@@ -555,7 +576,7 @@ export const DAYS: Day[] = [
         ],
       },
       {
-        t: '09:15', k: 'sight', title: '나고야성 · 혼마루고텐', photo: PHOTOS.castle, ja: '名古屋城・本丸御殿',
+        t: '09:15', pos: POS.castle, k: 'sight', title: '나고야성 · 혼마루고텐', photo: PHOTOS.castle, ja: '名古屋城・本丸御殿',
         note: '천수각은 복원 공사로 들어갈 수 없고 외관만 볼 수 있어요. 금박 장벽화가 있는 혼마루고텐이 핵심.', dur: '2h',
         facts: [
           ['요금', '1인 1,000엔 (10/1부터 인상, 65세 할인은 나고야 시민만) · 고텐 포함'],
@@ -568,7 +589,7 @@ export const DAYS: Day[] = [
         map: '名古屋城 本丸御殿',
       },
       {
-        t: '11:15', k: 'shop', title: '긴샤치요코초 둘러보기', photo: PHOTOS.kinshachi, ja: '金シャチ横丁',
+        t: '11:15', pos: POS.kinshachi, k: 'shop', title: '긴샤치요코초 둘러보기', photo: PHOTOS.kinshachi, ja: '金シャチ横丁',
         note: '나고야성 정문 앞 먹거리 골목. 에도풍 건물에 나고야 음식점과 기념품 가게가 모여 있어요.', dur: '1h',
         facts: [
           ['구역', '정문 쪽 요시나오 존(10:30–17:30 무렵), 동문 쪽 무네하루 존(11:00–22:00 무렵)'],
@@ -577,7 +598,7 @@ export const DAYS: Day[] = [
         map: '金シャチ横丁 義直ゾーン',
       },
       {
-        t: '12:15', k: 'food', title: '점심 · 야마모토야 소혼케 긴샤치요코초점', photo: PHOTOS.yamamotoya, ja: '山本屋総本家 金シャチ横丁店', menuId: 'yamamotoya',
+        t: '12:15', pos: POS.kinshachi, k: 'food', title: '점심 · 야마모토야 소혼케 긴샤치요코초점', photo: PHOTOS.yamamotoya, ja: '山本屋総本家 金シャチ横丁店', menuId: 'yamamotoya',
         note: '정문 바로 앞 요시나오 존. 1925년 창업한 미소니코미 우동(된장 냄비우동) 노포. 점심 피크라 조금 기다릴 수 있어요.',
         facts: [['영업', '10:30–17:30 (L.O. 17:00) · 화요일 휴무'], ['좌석', '40석 (테이블, 호리고타쓰, 카운터)']],
         menu: [['미소니코미 우동', '1,265'], ['나고야 코친 미소니코미 우동', '2,013'], ['긴샤치 기시멘 (한정)', '2,355']],
@@ -610,7 +631,7 @@ export const DAYS: Day[] = [
         ],
       },
       {
-        t: '13:45', k: 'sight', title: '아쓰타 신궁 참배', photo: PHOTOS.atsuta, menuId: 'miyakishimen', ja: '熱田神宮',
+        t: '13:45', pos: POS.atsuta, k: 'sight', title: '아쓰타 신궁 참배', photo: PHOTOS.atsuta, menuId: 'miyakishimen', ja: '熱田神宮',
         note: '1,900년 역사의 신궁. 큰 녹나무 숲 사이를 걸어 본궁까지 가요. 참배 무료.', dur: '1h 15m',
         facts: [
           ['영업', '경내 24시간 · 보물관 09:00–16:30 (500엔)'],
@@ -637,7 +658,7 @@ export const DAYS: Day[] = [
         ],
       },
       {
-        t: '15:20', k: 'shop', title: '오스 상점가 산책 (동쪽 → 서쪽)', photo: PHOTOS.osu, ja: '大須商店街',
+        t: '15:20', pos: POS.osu, k: 'shop', title: '오스 상점가 산책 (동쪽 → 서쪽)', photo: PHOTOS.osu, ja: '大須商店街',
         note: '지붕 있는 아케이드를 따라 서쪽 오스 칸논 방향으로 걸어요. 길거리 간식, 잡화, 전자상가가 섞여 있어요.', dur: '2h',
         facts: [
           ['영업', '가게마다 대략 10–11시 ~ 19–20시'],
@@ -648,13 +669,13 @@ export const DAYS: Day[] = [
         map: '大須商店街',
       },
       {
-        t: '17:20', k: 'sight', title: '오스 칸논', photo: PHOTOS.osukannon, ja: '大須観音',
+        t: '17:20', pos: POS.osuKannon, k: 'sight', title: '오스 칸논', photo: PHOTOS.osukannon, ja: '大須観音',
         note: '상점가 서쪽 끝의 절. 붉은 본당 앞에서 사진 한 장.', dur: '20m',
         facts: [['영업', '본당 06:00–19:00 · 무료'], ['주소', '名古屋市中区大須2-21-47']],
         map: '大須観音',
       },
       {
-        t: '18:30', k: 'food', title: '저녁 · 미소카츠 야바톤 야바초 본점', badges: ['예약 필수', '줄 김'], photo: PHOTOS.yabaton, ja: 'みそかつ 矢場とん 矢場町本店', menuId: 'yabaton',
+        t: '18:30', pos: POS.yabaton, k: 'food', title: '저녁 · 미소카츠 야바톤 야바초 본점', badges: ['예약 필수', '줄 김'], photo: PHOTOS.yabaton, ja: 'みそかつ 矢場とん 矢場町本店', menuId: 'yabaton',
         note: '1947년 창업한 미소카츠 본가. 연휴 토요일 저녁이라 예약하고 가세요.',
         ways: [
           {
@@ -691,13 +712,13 @@ export const DAYS: Day[] = [
         ],
       },
       {
-        t: '20:05', k: 'sight', title: '오아시스21 「물의 우주선」 야경', photo: PHOTOS.oasis, ja: 'オアシス21',
+        t: '20:05', pos: POS.oasis, k: 'sight', title: '오아시스21 「물의 우주선」 야경', photo: PHOTOS.oasis, ja: 'オアシス21',
         note: '1일차에 못 봤다면 여기서. 조명이 들어온 유리 지붕 위를 한 바퀴 걸어요. 무료.', dur: '20m',
         facts: [['영업', '옥상 10:00–21:00 · 무료'], ['행사', '10/10–12 고구마 페스티벌 (낮)']],
         map: 'オアシス21',
       },
       {
-        t: '20:30', k: 'shop', title: '돈키호테 사카에 본점 쇼핑', ja: 'ドン・キホーテ 栄本店',
+        t: '20:30', pos: POS.donki, k: 'shop', title: '돈키호테 사카에 본점 쇼핑', ja: 'ドン・キホーテ 栄本店',
         note: '과자, 화장품, 의약품, 기념품까지 한 번에. 24시간 영업이라 시간 걱정 없이 마지막 쇼핑을 해요.', dur: '45m',
         ways: [{ mode: 'walk', label: '오아시스21 → 돈키호테', time: '약 5분', best: true, note: '사카에역 1번 출구 바로 앞, 호텔까지는 도보 약 3분이에요.' }],
         facts: [
@@ -721,7 +742,7 @@ export const DAYS: Day[] = [
     },
     items: [
       {
-        t: '09:00', k: 'food', title: '아침 · 호텔 조식 뷔페', ja: HOTEL.ja,
+        t: '09:00', pos: POS.hotel, k: 'food', title: '아침 · 호텔 조식 뷔페', ja: HOTEL.ja,
         note: '일식·양식 뷔페는 09:30에 끝나니 9시엔 내려가세요.',
         facts: [['요금', '1인 약 1,500엔(사전) / 1,650엔(당일) · 2차 출처 기준']],
         alt: {
@@ -736,7 +757,7 @@ export const DAYS: Day[] = [
         facts: [['수하물', '1인 위탁 20kg 1개, 기내 7kg']],
       },
       {
-        t: '10:45', k: 'move', title: '체크아웃 → 오아시스21 → 리무진 버스', ja: 'セントレアリムジン 栄(オアシス21 9番のりば)',
+        t: '10:45', pos: POS.oasis, k: 'move', title: '체크아웃 → 오아시스21 → 리무진 버스', ja: 'セントレアリムジン 栄(オアシス21 9番のりば)',
         note: '오아시스21 버스터미널에서 리무진을 타면 갈아타지 않고 공항 제1터미널까지 가요. 11:10 버스는 현금을 받지 않으니 교통 IC나 신용카드 터치로 내세요.', dur: '약 1h 20m',
         taxi: { ja: 'オアシス21 バスターミナル', addr: '名古屋市東区東桜1-11-1' },
         ways: [
@@ -763,17 +784,17 @@ export const DAYS: Day[] = [
         map: 'オアシス21 バスターミナル',
       },
       {
-        t: '12:05', k: 'shop', title: '공항 4층 스카이타운 구경', ja: 'セントレア スカイタウン',
+        t: '12:05', pos: POS.centrair, k: 'shop', title: '공항 4층 스카이타운 구경', ja: 'セントレア スカイタウン',
         note: '체크인이 12:30에 열리니 그 전까지 4층 상점가에서 마지막 기념품을 사요. 보안검색 전 구역이에요.', dur: '25m',
         map: '中部国際空港 スカイタウン',
       },
       {
-        t: '12:30', k: 'flight', title: 'Peach 체크인 · 짐 맡기기', ja: 'セントレア 第1ターミナル 3F',
+        t: '12:30', pos: POS.centrair, k: 'flight', title: 'Peach 체크인 · 짐 맡기기', baggage: true, ja: 'セントレア 第1ターミナル 3F',
         note: 'T1 3층 C 카운터. 12:30 접수 시작, 14:10 마감. 짐을 먼저 맡기고 가볍게 점심 먹으러 가요.',
         map: '中部国際空港 第1ターミナル',
       },
       {
-        t: '12:45', k: 'food', title: '점심 · 마루하 식당 공항점', photo: PHOTOS.maruha, ja: 'まるは食堂 中部国際空港店', menuId: 'maruha',
+        t: '12:45', pos: POS.centrair, k: 'food', title: '점심 · 마루하 식당 공항점', photo: PHOTOS.maruha, ja: 'まるは食堂 中部国際空港店', menuId: 'maruha',
         note: 'T1 4층 조친요코초, 보안검색 전. 지타반도 명물 점보 새우튀김. 활주로가 보이는 자리.',
         facts: [['영업', '10:00–21:00 무렵 · 연중무휴'], ['좌석', '66석']],
         menu: [['센트레아 정식 (새우튀김 + 회)', '2,550'], ['명물 새우튀김 1개 (단품)', '950']],
@@ -786,7 +807,7 @@ export const DAYS: Day[] = [
         },
       },
       {
-        t: '13:40', k: 'flight', title: '보안검색 · 출국심사 · 면세점',
+        t: '13:40', k: 'flight', title: '보안검색 · 출국심사 · 면세점', baggage: true,
         note: '연휴라 줄이 길 수 있어요. 통과한 뒤 남는 시간에 면세점 구경. 탑승구는 14:30 마감이에요.',
       },
       {
@@ -838,23 +859,115 @@ export const CHECKLIST: CheckItem[] = [
   { id: 'yabaton', title: '야바톤 야바초 본점 예약 (10/10 18:30, 3명)', detail: 'Hotpepper 인터넷 예약은 10/9 17시 마감인데 그날은 투어 중이라 출발 전에 · 전화 052-252-8810' },
   { id: 'gomitori', title: '(선택) 고미토리 본점 예약 (10/9 19:30 이후, 3명)', detail: '투어가 늦어질 수 있어 늦게 잡기 · Hotpepper' },
   { id: 'seat', title: 'Peach 앱에서 좌석 지정', detail: 'Standard Plus는 Front·Middle·Back 구역 무료' },
-  { id: 'passport', title: '여권 3개 · 유효기간 확인', detail: '면세 쇼핑과 전망대 할인 확인에도 필요' },
-  { id: 'card', title: '해외결제 되는 터치 카드 준비', detail: '나고야 지하철 전 역, 메이테쓰 주요 역에서 카드 터치 승차 가능' },
-  { id: 'cash', title: '엔화 현금 넉넉히', detail: '시라카와고·다카야마 가게, 오스 상점가 노점은 현금만 받는 곳이 많아요' },
-  { id: 'shoes', title: '편한 운동화', detail: '시라카와고, 성, 신궁 자갈길, 상점가까지 매일 꽤 걸어요' },
-  { id: 'wear', title: '얇은 겉옷 · 접이식 우산', detail: '나고야 낮 24℃ · 밤 16℃ 안팎, 시라카와고·다카야마는 4–6℃ 더 추워요. 투어 날은 플리스나 가벼운 패딩' },
+]
+
+// 출발 전 짐 챙기기. 체크 상태는 CHECKLIST와 같은 저장 키(nagoya-ck-)를 쓴다
+export const PACKING: PackGroup[] = [
+  {
+    title: '서류 · 예약',
+    items: [
+      { id: 'passport', title: '여권 3개 · 유효기간 확인', detail: '면세 쇼핑과 전망대 할인 확인에도 필요' },
+      { id: 'vjwqr', title: 'Visit Japan Web QR 3명분 캡처', detail: '입국심사·세관 QR을 사진첩에 저장. 공항 와이파이가 느릴 수 있어요' },
+      { id: 'booking', title: '예약 화면 캡처', detail: 'Peach 예약번호, 호텔, 버스투어 바우처, 식당 예약. 인터넷 없이도 보이게' },
+    ],
+  },
+  {
+    title: '돈 · 결제',
+    items: [
+      { id: 'cash', title: '엔화 현금 넉넉히', detail: '시라카와고·다카야마 가게, 오스 상점가 노점은 현금만 받는 곳이 많아요' },
+      { id: 'card', title: '해외결제 되는 터치 카드 준비', detail: '나고야 지하철 전 역, 메이테쓰 주요 역에서 카드 터치 승차 가능' },
+      { id: 'coin', title: '동전 지갑', detail: '현금을 아직 많이 써서 1엔·5엔·100엔 동전이 금방 쌓여요' },
+    ],
+  },
+  {
+    title: '전자기기',
+    items: [
+      { id: 'adapter', title: '돼지코 어댑터 (A타입)', detail: '일본은 100V, 납작한 11자 2구. 휴대폰·노트북 충전기는 대부분 되지만 220V 전용 드라이기·고데기는 못 써요' },
+      { id: 'charger', title: '휴대폰 충전기 · 케이블', detail: '멀티탭이나 USB 포트 여러 개인 충전기가 있으면 3명이 같이 쓰기 편해요' },
+      { id: 'battery', title: '보조배터리 (1인 2개까지)', detail: '위탁 짐에 넣으면 안 돼요. 단자에 테이프를 붙이거나 비닐봉투에 하나씩 넣고, 기내에서는 선반 말고 손 닿는 곳에 두세요' },
+      { id: 'esim', title: 'eSIM · 로밍 · 포켓 와이파이', detail: '도착하자마자 구글 지도와 번역 앱을 쓸 수 있게 출발 전에 설치·개통' },
+    ],
+  },
+  {
+    title: '옷 · 신발',
+    items: [
+      { id: 'shoes', title: '편한 운동화', detail: '시라카와고, 성, 신궁 자갈길, 상점가까지 매일 꽤 걸어요' },
+      { id: 'wear', title: '얇은 겉옷 · 접이식 우산', detail: '나고야 낮 24℃ · 밤 16℃ 안팎, 시라카와고·다카야마는 4–6℃ 더 추워요. 투어 날은 플리스나 가벼운 패딩' },
+      { id: 'clothes', title: '3박 갈아입을 옷 · 잠옷 · 양말', detail: '혼마루고텐처럼 신발을 벗는 곳이 있어요. 구멍 난 양말은 피하세요' },
+    ],
+  },
+  {
+    title: '세면 · 건강',
+    items: [
+      { id: 'meds', title: '상비약 · 평소 먹는 약', detail: '멀미약(투어 날 버스를 오래 타요), 소화제, 진통제, 밴드. 처방약은 넉넉히' },
+      { id: 'toiletry', title: '세면도구 · 화장품', detail: '기내에 들고 타는 액체는 100ml 이하 용기에 담아 1L 지퍼백 하나에' },
+    ],
+  },
+  {
+    title: '가방 · 기타',
+    items: [
+      { id: 'hanky', title: '손수건 · 물티슈 · 작은 비닐봉투', detail: '화장실에 종이타월이 없는 곳이 많고 길에 쓰레기통이 거의 없어요' },
+      { id: 'ecobag', title: '장바구니 · 접이식 가방', detail: '편의점·마트 비닐봉투는 유료. 돈키호테 쇼핑으로 짐이 늘 때도 써요' },
+      { id: 'daypack', title: '투어 날 들 작은 가방', detail: '시라카와고·다카야마를 걸으니 가볍고 두 손이 자유로운 가방' },
+    ],
+  },
+]
+
+// 보안검색 전 수하물 규정. 보조배터리는 2026년 4월 한국(4/20)·일본(4/24) 개정 기준
+export const BAGGAGE_SUMMARY: string[] = [
+  '보조배터리는 위탁 짐에 넣지 말고 들고 타요. 1인 2개까지',
+  '기내 가방의 액체는 100ml 이하 용기만, 1L 투명 지퍼백 하나에',
+  '기내 가방은 2개 합계 7kg. 넘으면 위탁으로 돌리고 요금을 내요',
+]
+
+export const BAGGAGE: TipGroup[] = [
+  {
+    title: 'Peach 무료 수하물 (1인)',
+    items: [
+      ['기내', '2개 합계 7kg, 각각 세 변 합 115cm 이내. 핸드백·노트북 가방도 개수에 들어가요.'],
+      ['위탁', '1개 20kg, 세 변 합 203cm 이내. 넘으면 공항에서 추가 요금을 내요.'],
+      ['무게 확인', '집이나 호텔에서 미리 재 보세요. 기내 가방이 7kg을 넘으면 탑승 전에 위탁으로 돌려야 해요.'],
+    ],
+  },
+  {
+    title: '보조배터리 · 전자기기',
+    items: [
+      ['위탁 금지', '보조배터리, 예비 배터리, 전자담배는 위탁 짐에 넣으면 안 돼요. 꼭 들고 타요.'],
+      ['개수 · 용량', '1인 2개까지, 160Wh 이하. 흔한 10,000–20,000mAh 제품은 괜찮아요. 27,000mAh(100Wh)가 넘는 대용량은 항공사에 미리 확인하세요.'],
+      ['단락 방지', '단자에 절연 테이프를 붙이거나 하나씩 작은 비닐봉투·파우치에 넣어요. 김포에서는 카운터와 보안검색에서 확인해요.'],
+      ['기내에서', '보조배터리로 휴대폰을 충전하거나 보조배터리를 충전하면 안 돼요. 머리 위 선반이 아니라 좌석 주변 손 닿는 곳에 둬요.'],
+      ['노트북 · 태블릿', '기내 가방에 넣어요. 보안검색에서 꺼내라고 하면 바구니에 따로 올려요.'],
+    ],
+  },
+  {
+    title: '액체 · 젤 (기내 가방)',
+    items: [
+      ['100ml 규칙', '용기 하나당 100ml 이하, 모두 1L 투명 지퍼백(약 20×20cm) 1개에 담아요. 내용물이 조금 남은 큰 용기도 안 돼요.'],
+      ['액체로 보는 것', '화장품, 선크림, 치약, 젤, 잼, 푸딩, 된장, 명란젓도 액체로 봐요.'],
+      ['예외', '복용약과 아기 음식은 필요한 만큼 가져갈 수 있어요. 보안검색 때 따로 보여 주세요.'],
+      ['면세점', '보안검색을 지난 뒤 면세 구역에서 산 술·화장품은 100ml가 넘어도 들고 탈 수 있어요.'],
+    ],
+  },
+  {
+    title: '기내에 못 들고 타는 것',
+    items: [
+      ['칼 · 가위 · 공구', '과도, 맥가이버칼, 공구는 위탁 짐에. 가위는 날 6cm 이하만 기내 가능해요.'],
+      ['라이터', '1인 1개만 몸에 지니고 타요. 위탁 짐에는 넣을 수 없어요.'],
+      ['스프레이', '살충제 같은 가스 제품은 기내·위탁 모두 안 돼요. 화장품 스프레이는 100ml 이하면 기내 가능해요.'],
+    ],
+  },
+  {
+    title: '돌아올 때 (센트레아 → 김포)',
+    items: [
+      ['액체 기념품', '사케, 간장, 된장, 명란젓, 푸딩 같은 액체·젤 기념품은 위탁 짐에 넣어요. 병은 옷으로 감싸요.'],
+      ['짐 무게', '쇼핑으로 위탁 짐이 20kg을 넘기 쉬워요. 호텔에서 미리 나눠 담아요.'],
+      ['한국 면세 한도', '1인 800달러. 술은 병 수와 상관없이 합계 2L·400달러 이하, 향수 100ml, 담배 200개비는 따로 면세예요. 넘으면 자진신고하면 세금이 30% 줄어요.'],
+      ['반입 금지', '육포, 햄, 소시지 같은 고기 가공품과 생과일은 한국으로 가져올 수 없어요.'],
+    ],
+  },
 ]
 
 export const FIRST_TRIP_TIPS: TipGroup[] = [
-  {
-    title: '짐 챙길 때',
-    items: [
-      ['변환 어댑터', '일본은 100V, 납작한 11자 2구(A타입)라 한국 플러그가 안 맞아요. 휴대폰·노트북 충전기는 대부분 100V도 되지만 220V 전용 드라이기·고데기는 못 써요.'],
-      ['동전 지갑', '현금을 아직 많이 써서 1엔·5엔·100엔 동전이 금방 쌓여요.'],
-      ['손수건 · 작은 비닐봉투', '화장실에 종이타월이 없는 곳이 많고 길에 쓰레기통이 거의 없어요. 쓰레기는 들고 다니다 편의점이나 호텔에서 버려요.'],
-      ['인터넷', 'eSIM이나 포켓 와이파이를 미리 준비하면 구글 지도와 번역 앱을 바로 쓸 수 있어요.'],
-    ],
-  },
   {
     title: '돈과 결제',
     items: [

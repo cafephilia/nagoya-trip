@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, ref } from 'vue'
 import type { Day } from '../types'
 import { localDate, toMinutes } from '../utils'
+import DayMap from './DayMap.vue'
 import TimelineItem from './TimelineItem.vue'
 
 const props = defineProps<{ day: Day }>()
@@ -30,6 +31,14 @@ onMounted(async () => {
   await nextTick()
   list.value?.children[currentIndex.value]?.scrollIntoView({ block: 'center' })
 })
+
+/** 지도 목록에서 고른 일정 카드로 가서 펼친다 */
+function focusItem(i: number) {
+  const el = list.value?.children[i]
+  if (!el) return
+  el.querySelector('details')?.setAttribute('open', '')
+  el.scrollIntoView({ block: 'start', behavior: 'smooth' })
+}
 </script>
 
 <template>
@@ -47,6 +56,7 @@ onMounted(async () => {
       <strong>{{ day.callout.strong }}</strong>{{ day.callout.text }}
     </div>
   </section>
+  <DayMap :day="day" @focus="focusItem" />
   <ol ref="list" class="tl">
     <TimelineItem
       v-for="(item, i) in day.items"

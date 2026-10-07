@@ -2,11 +2,14 @@
 import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
 import { DAYS, FLIGHTS } from './data/trip'
 import type { MenuBoard, Place } from './types'
-import { localDate, openMenuKey, openTaxiKey, store } from './utils'
+import { localDate, openBaggageKey, openMenuKey, openPackKey, openTaxiKey, store } from './utils'
+import { packDone, packTotal } from './packing'
 import DayView from './components/DayView.vue'
 import FoodView from './components/FoodView.vue'
 import InfoView from './components/InfoView.vue'
 import MenuSheet from './components/MenuSheet.vue'
+import PackSheet from './components/PackSheet.vue'
+import BaggageSheet from './components/BaggageSheet.vue'
 import TaxiCard from './components/TaxiCard.vue'
 
 const TAB_KEY = 'nagoya-tab'
@@ -65,10 +68,23 @@ provide(openMenuKey, board => {
   menu.value = board
 })
 
+const packOpen = ref(false)
+provide(openPackKey, () => {
+  packOpen.value = true
+})
+
+const baggageOpen = ref(false)
+provide(openBaggageKey, () => {
+  baggageOpen.value = true
+})
+
 const onKey = (e: KeyboardEvent) => {
   if (e.key !== 'Escape') return
   taxi.value = null
   menu.value = null
+  // 짐 목록 위에 수하물 규정을 열었으면 위에 있는 것부터 닫는다
+  if (baggageOpen.value) baggageOpen.value = false
+  else packOpen.value = false
 }
 onMounted(() => {
   document.addEventListener('keydown', onKey)
@@ -96,6 +112,13 @@ onBeforeUnmount(() => {
           <span class="hf-date">{{ f.date }}</span>
         </div>
       </div>
+      <button class="hero-pack" type="button" @click="packOpen = true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4" y="7" width="16" height="13" rx="2.5" /><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M4 12h16" />
+        </svg>
+        <span>출발 전 챙길 것</span>
+        <span class="hp-count" :class="{ done: packDone === packTotal }">{{ packDone }}/{{ packTotal }}</span>
+      </button>
     </header>
 
     <main id="view">
@@ -130,6 +153,8 @@ onBeforeUnmount(() => {
     </div>
   </nav>
 
+  <PackSheet v-if="packOpen" @close="packOpen = false" />
+  <BaggageSheet v-if="baggageOpen" @close="baggageOpen = false" />
   <MenuSheet v-if="menu" :menu="menu" @close="menu = null" />
   <TaxiCard v-if="taxi" :place="taxi" @close="taxi = null" />
 </template>
