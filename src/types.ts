@@ -192,4 +192,6 @@ export interface FoodSpot {
   sources: string[]
   inItinerary?: boolean
   badges?: Badge[]
+  /** 사용자가 받은 유튜버 추천 리스트에 있던 곳 */
+  youtuber?: boolean
 }
