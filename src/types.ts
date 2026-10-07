@@ -160,3 +160,29 @@ export interface MenuBoard {
   tips?: string[]
   sources?: string[]
 }
+
+export type FoodGenre = '나고야메시' | '라멘·면' | '고기' | '해산물·스시' | '카페·디저트' | '길거리 음식'
+export type FoodArea = '사카에' | '오스' | '나고야역' | '나고야성' | '아쓰타' | '기타'
+
+/** SNS·유튜브에서 유명한 맛집 */
+export interface FoodSpot {
+  id: string
+  name: string
+  ja: string
+  genre: FoodGenre
+  area: FoodArea
+  /** 왜 유명한지 */
+  why: string
+  /** [한국어, 일본어, 엔] */
+  orders: [ko: string, ja: string, yen: string][]
+  price: string
+  hours: string
+  closed: string
+  access: string
+  fromHotel?: string
+  tips: string
+  /** 구글 지도 검색어 */
+  map: string
+  sources: string[]
+  inItinerary?: boolean
+}

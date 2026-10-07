@@ -4,6 +4,7 @@ import { DAYS, FLIGHTS } from './data/trip'
 import type { MenuBoard, Place } from './types'
 import { localDate, openMenuKey, openTaxiKey, store } from './utils'
 import DayView from './components/DayView.vue'
+import FoodView from './components/FoodView.vue'
 import InfoView from './components/InfoView.vue'
 import MenuSheet from './components/MenuSheet.vue'
 import TaxiCard from './components/TaxiCard.vue'
@@ -13,6 +14,7 @@ const today = localDate()
 
 const tabs = [
   ...DAYS.map(d => ({ id: d.id, label: d.label, short: d.short, isToday: d.date === today })),
+  { id: 'food', label: '맛집', short: 'SNS', isToday: false },
   { id: 'info', label: '정보', short: '준비', isToday: false },
 ]
 const isTab = (id: string | null): id is string => !!id && tabs.some(t => t.id === id)
@@ -98,6 +100,7 @@ onBeforeUnmount(() => {
 
     <main id="view">
       <DayView v-if="activeDay" :key="activeDay.id" :day="activeDay" />
+      <FoodView v-else-if="active === 'food'" />
       <InfoView v-else />
     </main>
 
