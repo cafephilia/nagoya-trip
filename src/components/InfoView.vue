@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, inject, reactive, watch } from 'vue'
-import { CHECKLIST, FIRST_TRIP_TIPS, FLIGHTS, HOTEL, USEFUL_APPS } from '../data/trip'
+import { CHECKLIST, FIRST_TRIP_TIPS, FLIGHTS, HOTEL, STAY, USEFUL_APPS } from '../data/trip'
 import { packDone, packTotal } from '../packing'
 import { checkKey, openBaggageKey, openPackKey, store } from '../utils'
 import MapLink from './MapLink.vue'
@@ -120,16 +120,16 @@ const contacts: [string, string][] = [
   <div class="sec">
     <h3>숙소</h3>
     <div class="box">
-      <h4>호텔 마이스테이즈 나고야 니시키 <span class="ja sub-ja">{{ HOTEL.ja }}</span></h4>
+      <h4>{{ STAY.name }} <span class="ja sub-ja">{{ HOTEL.ja }}</span></h4>
       <dl class="facts spaced">
         <dt>주소</dt><dd class="ja">{{ HOTEL.addr }}</dd>
         <dt>전화</dt><dd class="mono">{{ HOTEL.tel }}</dd>
-        <dt>시간</dt><dd>체크인 15:00 · 체크아웃 11:00</dd>
+        <dt>시간</dt><dd>체크인 {{ STAY.checkIn }} · 체크아웃 {{ STAY.checkOut }}</dd>
         <dt>역</dt><dd>사카에역 1번 출구 · 히사야오도리역 4번 출구 도보 3분</dd>
         <dt>조식</dt><dd>뷔페 06:30–09:30, 약 1,500엔</dd>
       </dl>
       <div class="actions">
-        <MapLink query="ホテルマイステイズ名古屋錦 名古屋市中区錦3-8-21" solid />
+        <MapLink :query="STAY.map" solid />
         <TaxiButton :place="HOTEL" />
       </div>
     </div>

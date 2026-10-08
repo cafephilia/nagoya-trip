@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
-import { DAYS, FLIGHTS } from './data/trip'
+import { DAYS, FLIGHTS, HOTEL, STAY } from './data/trip'
 import type { MenuBoard, Place } from './types'
-import { localDate, openBaggageKey, openMenuKey, openPackKey, openTaxiKey, store } from './utils'
+import { localDate, mapUrl, openBaggageKey, openMenuKey, openPackKey, openTaxiKey, store } from './utils'
 import DayView from './components/DayView.vue'
 import FoodView from './components/FoodView.vue'
 import InfoView from './components/InfoView.vue'
@@ -109,6 +109,20 @@ onBeforeUnmount(() => {
           <span class="hf-code">{{ f.code }}</span>
           <span class="hf-route">{{ f.from.code }} {{ f.from.time }} → {{ f.to.code }}</span>
           <span class="hf-date">{{ f.date }}</span>
+        </div>
+      </div>
+      <div class="hero-stay">
+        <div class="hs-head">
+          <span class="hs-label">숙소</span>
+          <span class="hs-nights">{{ STAY.nights }}</span>
+        </div>
+        <div class="hs-name">{{ STAY.name }}</div>
+        <div class="hs-addr ja">{{ HOTEL.addr }}</div>
+        <div class="hs-meta">체크인 {{ STAY.checkIn }} · 체크아웃 {{ STAY.checkOut }} · {{ STAY.station }}</div>
+        <div class="hs-actions">
+          <a class="hs-btn" :href="mapUrl(STAY.map)" target="_blank" rel="noopener">지도</a>
+          <button class="hs-btn" type="button" @click="taxi = HOTEL">택시용 주소</button>
+          <a class="hs-btn" :href="'tel:' + HOTEL.tel">전화</a>
         </div>
       </div>
     </header>

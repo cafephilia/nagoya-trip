@@ -11,6 +11,16 @@ export const HOTEL: Place = {
   tel: '052-855-2085',
 }
 
+/** 상단 요약과 정보 탭에 보여줄 숙소 정보 */
+export const STAY = {
+  name: '호텔 마이스테이즈 나고야 니시키',
+  nights: '10.8 – 10.11 · 3박',
+  checkIn: '15:00',
+  checkOut: '11:00',
+  station: '사카에역 도보 3분',
+  map: 'ホテルマイステイズ名古屋錦 名古屋市中区錦3-8-21',
+}
+
 // 동선 지도용 좌표 [위도, 경도]. 주소는 국토지리원 주소 검색, 명소는 OpenStreetMap 기준
 const POS = {
   centrair: [34.85994, 136.81618],
